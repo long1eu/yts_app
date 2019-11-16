@@ -8,7 +8,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:root/movies.dart';
 import 'package:root/root.dart';
 
-import 'yts_epic.dart';
+import 'movies_epic.dart';
 
 Epic<MoviesState> epic({@required HttpService httpService}) {
   final YtsApi ytsApi = YtsApi(httpService: httpService);
