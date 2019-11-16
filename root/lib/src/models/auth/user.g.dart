@@ -20,6 +20,15 @@ class _$UserSerializer implements StructuredSerializer<User> {
     final result = <Object>[
       'uid',
       serializers.serialize(object.uid, specifiedType: const FullType(String)),
+      'email',
+      serializers.serialize(object.email,
+          specifiedType: const FullType(String)),
+      'photo',
+      serializers.serialize(object.photo,
+          specifiedType: const FullType(String)),
+      'displayName',
+      serializers.serialize(object.displayName,
+          specifiedType: const FullType(String)),
     ];
 
     return result;
@@ -40,6 +49,18 @@ class _$UserSerializer implements StructuredSerializer<User> {
           result.uid = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'email':
+          result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'photo':
+          result.photo = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'displayName':
+          result.displayName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -50,13 +71,28 @@ class _$UserSerializer implements StructuredSerializer<User> {
 class _$User extends User {
   @override
   final String uid;
+  @override
+  final String email;
+  @override
+  final String photo;
+  @override
+  final String displayName;
 
   factory _$User([void Function(UserBuilder) updates]) =>
       (new UserBuilder()..update(updates)).build();
 
-  _$User._({this.uid}) : super._() {
+  _$User._({this.uid, this.email, this.photo, this.displayName}) : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('User', 'uid');
+    }
+    if (email == null) {
+      throw new BuiltValueNullFieldError('User', 'email');
+    }
+    if (photo == null) {
+      throw new BuiltValueNullFieldError('User', 'photo');
+    }
+    if (displayName == null) {
+      throw new BuiltValueNullFieldError('User', 'displayName');
     }
   }
 
@@ -70,17 +106,28 @@ class _$User extends User {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is User && uid == other.uid;
+    return other is User &&
+        uid == other.uid &&
+        email == other.email &&
+        photo == other.photo &&
+        displayName == other.displayName;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, uid.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, uid.hashCode), email.hashCode), photo.hashCode),
+        displayName.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('User')..add('uid', uid)).toString();
+    return (newBuiltValueToStringHelper('User')
+          ..add('uid', uid)
+          ..add('email', email)
+          ..add('photo', photo)
+          ..add('displayName', displayName))
+        .toString();
   }
 }
 
@@ -91,11 +138,26 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String get uid => _$this._uid;
   set uid(String uid) => _$this._uid = uid;
 
+  String _email;
+  String get email => _$this._email;
+  set email(String email) => _$this._email = email;
+
+  String _photo;
+  String get photo => _$this._photo;
+  set photo(String photo) => _$this._photo = photo;
+
+  String _displayName;
+  String get displayName => _$this._displayName;
+  set displayName(String displayName) => _$this._displayName = displayName;
+
   UserBuilder();
 
   UserBuilder get _$this {
     if (_$v != null) {
       _uid = _$v.uid;
+      _email = _$v.email;
+      _photo = _$v.photo;
+      _displayName = _$v.displayName;
       _$v = null;
     }
     return this;
@@ -116,7 +178,9 @@ class UserBuilder implements Builder<User, UserBuilder> {
 
   @override
   _$User build() {
-    final _$result = _$v ?? new _$User._(uid: uid);
+    final _$result = _$v ??
+        new _$User._(
+            uid: uid, email: email, photo: photo, displayName: displayName);
     replace(_$result);
     return _$result;
   }
@@ -139,14 +203,25 @@ class _$UserAdapter extends TypeAdapter<User> {
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return (UserBuilder()..uid = fields[0]).build();
+    return (UserBuilder()
+          ..uid = fields[0]
+          ..email = fields[1]
+          ..photo = fields[2]
+          ..displayName = fields[3])
+        .build();
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.uid);
+      ..write(obj.uid)
+      ..writeByte(1)
+      ..write(obj.email)
+      ..writeByte(2)
+      ..write(obj.photo)
+      ..writeByte(3)
+      ..write(obj.displayName);
   }
 }
