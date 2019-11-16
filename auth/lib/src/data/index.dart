@@ -2,5 +2,4 @@
 // Lung Razvan <long1eu>
 // on 16/11/2019
 
-export 'auth_state.dart';
-export 'user.dart';
+export 'auth_api.dart';

@@ -4,6 +4,8 @@
 
 import 'package:root/src/actions/index.dart';
 
+export 'bootstrap.dart';
+
 abstract class AuthAction implements AppAction {
   const AuthAction();
 }

@@ -8,4 +8,6 @@ abstract class AppAction {
 
 abstract class ErrorAction implements AppAction {
   const ErrorAction();
+
+  Object get error;
 }
