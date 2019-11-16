@@ -19,13 +19,13 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
   Iterable<Object> serialize(Serializers serializers, PlatformState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'selectedMovieId',
+      serializers.serialize(object.selectedMovieId,
+          specifiedType: const FullType(int)),
       'movieData',
       serializers.serialize(object.movieData,
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(MovieData)])),
-      'selectedMovieId',
-      serializers.serialize(object.selectedMovieId,
-          specifiedType: const FullType(int)),
     ];
 
     return result;
@@ -43,16 +43,16 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'selectedMovieId':
+          result.selectedMovieId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'movieData':
           result.movieData.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(MovieData)
               ])) as BuiltMap<dynamic, dynamic>);
-          break;
-        case 'selectedMovieId':
-          result.selectedMovieId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
           break;
       }
     }
@@ -63,19 +63,19 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
 
 class _$PlatformState extends PlatformState {
   @override
-  final BuiltMap<int, MovieData> movieData;
-  @override
   final int selectedMovieId;
+  @override
+  final BuiltMap<int, MovieData> movieData;
 
   factory _$PlatformState([void Function(PlatformStateBuilder) updates]) =>
       (new PlatformStateBuilder()..update(updates)).build();
 
-  _$PlatformState._({this.movieData, this.selectedMovieId}) : super._() {
-    if (movieData == null) {
-      throw new BuiltValueNullFieldError('PlatformState', 'movieData');
-    }
+  _$PlatformState._({this.selectedMovieId, this.movieData}) : super._() {
     if (selectedMovieId == null) {
       throw new BuiltValueNullFieldError('PlatformState', 'selectedMovieId');
+    }
+    if (movieData == null) {
+      throw new BuiltValueNullFieldError('PlatformState', 'movieData');
     }
   }
 
@@ -90,20 +90,20 @@ class _$PlatformState extends PlatformState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PlatformState &&
-        movieData == other.movieData &&
-        selectedMovieId == other.selectedMovieId;
+        selectedMovieId == other.selectedMovieId &&
+        movieData == other.movieData;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, movieData.hashCode), selectedMovieId.hashCode));
+    return $jf($jc($jc(0, selectedMovieId.hashCode), movieData.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PlatformState')
-          ..add('movieData', movieData)
-          ..add('selectedMovieId', selectedMovieId))
+          ..add('selectedMovieId', selectedMovieId)
+          ..add('movieData', movieData))
         .toString();
   }
 }
@@ -112,23 +112,23 @@ class PlatformStateBuilder
     implements Builder<PlatformState, PlatformStateBuilder> {
   _$PlatformState _$v;
 
+  int _selectedMovieId;
+  int get selectedMovieId => _$this._selectedMovieId;
+  set selectedMovieId(int selectedMovieId) =>
+      _$this._selectedMovieId = selectedMovieId;
+
   MapBuilder<int, MovieData> _movieData;
   MapBuilder<int, MovieData> get movieData =>
       _$this._movieData ??= new MapBuilder<int, MovieData>();
   set movieData(MapBuilder<int, MovieData> movieData) =>
       _$this._movieData = movieData;
 
-  int _selectedMovieId;
-  int get selectedMovieId => _$this._selectedMovieId;
-  set selectedMovieId(int selectedMovieId) =>
-      _$this._selectedMovieId = selectedMovieId;
-
   PlatformStateBuilder();
 
   PlatformStateBuilder get _$this {
     if (_$v != null) {
-      _movieData = _$v.movieData?.toBuilder();
       _selectedMovieId = _$v.selectedMovieId;
+      _movieData = _$v.movieData?.toBuilder();
       _$v = null;
     }
     return this;
@@ -153,7 +153,7 @@ class PlatformStateBuilder
     try {
       _$result = _$v ??
           new _$PlatformState._(
-              movieData: movieData.build(), selectedMovieId: selectedMovieId);
+              selectedMovieId: selectedMovieId, movieData: movieData.build());
     } catch (_) {
       String _$failedField;
       try {

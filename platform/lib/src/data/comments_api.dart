@@ -21,8 +21,9 @@ class CommentsApi {
               ..sort());
   }
 
-  Future<Comment> createComment(Comment comment) async {
-    await _databaseService.insert('movies/${comment.movieId}/comments/${comment.id}', comment.json);
-    return comment.rebuild((CommentBuilder b) => b.status = SendingStatus.server);
+  Observable<Comment> sendComment(Comment comment) {
+    return Observable<void>.fromFuture(
+            _databaseService.insert('movies/${comment.movieId}/comments/${comment.id}', comment.json))
+        .mapTo(comment.rebuild((CommentBuilder b) => b.status = SendingStatus.server));
   }
 }

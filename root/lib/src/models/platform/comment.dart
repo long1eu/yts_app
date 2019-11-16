@@ -18,7 +18,7 @@ import 'serializers.dart';
 part 'comment.g.dart';
 
 @HiveType(typeId: 5)
-abstract class Comment implements Built<Comment, CommentBuilder>, ListenEventItem {
+abstract class Comment implements Built<Comment, CommentBuilder>, ListenEventItem, Comparable<Comment> {
   factory Comment([void Function(CommentBuilder b) updates]) = _$Comment;
 
   factory Comment.create({
@@ -72,6 +72,9 @@ abstract class Comment implements Built<Comment, CommentBuilder>, ListenEventIte
   @nullable
   @BuiltValueField(serialize: false)
   SendingStatus get status;
+
+  @override
+  int compareTo(Comment other) => other.createdAt.compareTo(createdAt);
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

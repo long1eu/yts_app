@@ -18,6 +18,7 @@ class PlatformEpic {
   Epic<PlatformState> get epic {
     return combineEpics<PlatformState>(<Epic<PlatformState>>[
       _listenForComments,
+      TypedEpic<PlatformState, SendComment>(_sendComment),
     ]);
   }
 
@@ -31,5 +32,16 @@ class PlatformEpic {
             .takeUntil(Observable<dynamic>(actions).whereType<StopListeningForComments>())
             .doOnDone(() => print('⏹ listening for comments')))
         .onErrorReturnWith((dynamic error) => ListenForCommentsError(error));
+  }
+
+  Stream<PlatformAction> _sendComment(Stream<SendComment> actions, EpicStore<PlatformState> store) {
+    return Observable<SendComment>(actions) //
+        .flatMap<PlatformAction>((SendComment action) => _commentsApi
+            .sendComment(action.comment)
+            .map<PlatformAction>((Comment comment) =>
+                SendCommentSuccessful(comment.rebuild((CommentBuilder b) => b.status = SendingStatus.server)))
+            .timeout(const Duration(seconds: 30))
+            .onErrorReturnWith((dynamic error) =>
+                SendCommentError(error, action.comment.rebuild((CommentBuilder b) => b.status = SendingStatus.error))));
   }
 }
