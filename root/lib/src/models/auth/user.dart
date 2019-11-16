@@ -15,8 +15,7 @@ part 'user.g.dart';
 abstract class User implements Built<User, UserBuilder> {
   factory User([void Function(UserBuilder b) updates]) = _$User;
 
-  factory User.fromJson(Map<dynamic, dynamic> json) =>
-      serializers.deserializeWith(serializer, json);
+  factory User.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
 
   User._();
 

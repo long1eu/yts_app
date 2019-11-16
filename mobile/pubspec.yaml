@@ -13,6 +13,7 @@ dependencies:
   flutter_redux: ^0.5.4
   firebase_auth: ^0.14.0+9
   path_provider: ^1.4.2
+  cloud_firestore: ^0.12.10
 
   auth:
     path: ../auth

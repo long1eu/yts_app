@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:hive/hive.dart';
-import 'package:mobile/src/data/auth_service.dart';
-import 'package:mobile/src/data/database_service.dart';
+import 'package:http/http.dart';
+import 'package:mobile/src/data/firebase_auth_service.dart';
+import 'package:mobile/src/data/firestore_database_service.dart';
 import 'package:mobile/src/data/http_service.dart';
 import 'package:mobile/src/epics/app_epics.dart';
 import 'package:mobile/src/models/app_state.dart';
@@ -22,12 +25,13 @@ Future<void> main() async {
   Hive.init(appDir.path);
   registerHiveTypes();
 
-  const AuthService authService = AuthService();
-  const HttpService httpService = HttpService();
-  const DatabaseService databaseService = DatabaseService();
-
+  // initialize epics
+  final FirebaseAuthService authService = FirebaseAuthService(firebaseAuth: FirebaseAuth.instance);
+  final FirestoreDatabaseService databaseService = FirestoreDatabaseService(firestore: Firestore.instance);
+  final HttpService httpService = HttpService(client: Client(), host: 'yts.lt');
   final AppEpics epics = AppEpics(authService: authService, httpService: httpService, databaseService: databaseService);
 
+  // initialize store
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
@@ -36,6 +40,7 @@ Future<void> main() async {
     ],
   );
 
+  // start app
   runApp(YtsApp(store: store));
 }
 
