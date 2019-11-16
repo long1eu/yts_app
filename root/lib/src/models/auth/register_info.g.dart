@@ -18,21 +18,31 @@ class _$RegisterInfoSerializer implements StructuredSerializer<RegisterInfo> {
   @override
   Iterable<Object> serialize(Serializers serializers, RegisterInfo object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'email',
-      serializers.serialize(object.email,
-          specifiedType: const FullType(String)),
-      'password',
-      serializers.serialize(object.password,
-          specifiedType: const FullType(String)),
-      'photo',
-      serializers.serialize(object.photo,
-          specifiedType: const FullType(String)),
-      'displayName',
-      serializers.serialize(object.displayName,
-          specifiedType: const FullType(String)),
-    ];
-
+    final result = <Object>[];
+    if (object.email != null) {
+      result
+        ..add('email')
+        ..add(serializers.serialize(object.email,
+            specifiedType: const FullType(String)));
+    }
+    if (object.password != null) {
+      result
+        ..add('password')
+        ..add(serializers.serialize(object.password,
+            specifiedType: const FullType(String)));
+    }
+    if (object.photo != null) {
+      result
+        ..add('photo')
+        ..add(serializers.serialize(object.photo,
+            specifiedType: const FullType(String)));
+    }
+    if (object.displayName != null) {
+      result
+        ..add('displayName')
+        ..add(serializers.serialize(object.displayName,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -84,20 +94,7 @@ class _$RegisterInfo extends RegisterInfo {
       (new RegisterInfoBuilder()..update(updates)).build();
 
   _$RegisterInfo._({this.email, this.password, this.photo, this.displayName})
-      : super._() {
-    if (email == null) {
-      throw new BuiltValueNullFieldError('RegisterInfo', 'email');
-    }
-    if (password == null) {
-      throw new BuiltValueNullFieldError('RegisterInfo', 'password');
-    }
-    if (photo == null) {
-      throw new BuiltValueNullFieldError('RegisterInfo', 'photo');
-    }
-    if (displayName == null) {
-      throw new BuiltValueNullFieldError('RegisterInfo', 'displayName');
-    }
-  }
+      : super._();
 
   @override
   RegisterInfo rebuild(void Function(RegisterInfoBuilder) updates) =>

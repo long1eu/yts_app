@@ -16,8 +16,13 @@ part 'auth_state.g.dart';
 abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
   factory AuthState([void Function(AuthStateBuilder b) updates]) = _$AuthState;
 
-  factory AuthState.fromJson(Map<dynamic, dynamic> json) =>
-      serializers.deserializeWith(serializer, json);
+  factory AuthState.initialState() {
+    return _$AuthState((AuthStateBuilder b) {
+      b.registerInfo = RegisterInfo.initialState().toBuilder();
+    });
+  }
+
+  factory AuthState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
 
   AuthState._();
 

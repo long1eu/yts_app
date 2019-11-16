@@ -1,4 +1,4 @@
-library movies;
+library app_platform;
 
 export 'src/data/index.dart';
 export 'src/epics/index.dart';

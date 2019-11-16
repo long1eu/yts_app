@@ -3,7 +3,7 @@
 // on 16/11/2019
 
 import 'package:meta/meta.dart';
-import 'package:platform/src/data/index.dart';
+import 'package:app_platform/src/data/index.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/root.dart';
 

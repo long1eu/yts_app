@@ -3,7 +3,7 @@
 // on 16/11/2019
 
 import 'package:meta/meta.dart';
-import 'package:platform/src/data/comments_api.dart';
+import 'package:app_platform/src/data/comments_api.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/platform.dart';
 import 'package:rxdart/rxdart.dart';
