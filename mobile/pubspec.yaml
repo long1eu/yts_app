@@ -12,13 +12,24 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_redux: ^0.5.4
   firebase_auth: ^0.14.0+9
+  path_provider: ^1.4.2
 
+  auth:
+    path: ../auth
+  movies:
+    path: ../movies
+  app_platform:
+    path: ../platform
   root:
     path: ../root
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  built_value_generator: ^6.8.2
+  build_runner: ^1.7.0
+  hive_generator:
+    git: https://github.com/long1eu/hive_generator
 
 flutter:
   uses-material-design: true

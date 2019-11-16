@@ -16,6 +16,12 @@ part 'platform_state.g.dart';
 abstract class PlatformState implements Built<PlatformState, PlatformStateBuilder> {
   factory PlatformState([void Function(PlatformStateBuilder b) updates]) = _$PlatformState;
 
+  factory PlatformState.initialState() {
+    return _$PlatformState((PlatformStateBuilder b) {
+      b.movieData = MapBuilder<int, MovieData>();
+    });
+  }
+
   factory PlatformState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
 
   PlatformState._();
