@@ -8,14 +8,17 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
+import 'package:root/src/actions/index.dart';
+import 'package:root/src/data/database_service.dart';
 import 'package:root/src/utils/auto_id.dart';
 
+import 'index.dart';
 import 'serializers.dart';
 
 part 'comment.g.dart';
 
 @HiveType(typeId: 5)
-abstract class Comment implements Built<Comment, CommentBuilder> {
+abstract class Comment implements Built<Comment, CommentBuilder>, ListenEventItem {
   factory Comment([void Function(CommentBuilder b) updates]) = _$Comment;
 
   factory Comment.create({
@@ -31,14 +34,21 @@ abstract class Comment implements Built<Comment, CommentBuilder> {
         ..movieId = movieId
         ..text = text
         ..uid = uid
-        ..createdAt = createdAt ?? DateTime.now().toUtc().microsecondsSinceEpoch;
+        ..createdAt = createdAt ?? DateTime.now().toUtc().microsecondsSinceEpoch
+        ..changeType = ObjectChangeType.added
+        ..status = SendingStatus.sending;
     });
   }
 
-  factory Comment.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory Comment.fromJson(Map<dynamic, dynamic> json, [ObjectChangeType type]) {
+    return serializers.deserializeWith(serializer, json).rebuild((CommentBuilder b) {
+      b.changeType = type;
+    });
+  }
 
   Comment._();
 
+  @override
   @HiveField(0)
   String get id;
 
@@ -53,6 +63,15 @@ abstract class Comment implements Built<Comment, CommentBuilder> {
 
   @HiveField(4)
   String get text;
+
+  @override
+  @nullable
+  @BuiltValueField(serialize: false)
+  ObjectChangeType get changeType;
+
+  @nullable
+  @BuiltValueField(serialize: false)
+  SendingStatus get status;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

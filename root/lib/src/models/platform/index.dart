@@ -5,3 +5,4 @@
 export 'comment.dart';
 export 'movie_data.dart';
 export 'platform_state.dart';
+export 'sending_status.dart';

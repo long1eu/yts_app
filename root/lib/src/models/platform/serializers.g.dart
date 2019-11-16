@@ -10,6 +10,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Comment.serializer)
       ..add(MovieData.serializer)
       ..add(PlatformState.serializer)
+      ..add(SendingStatus.serializer)
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(String), const FullType(Comment)]),

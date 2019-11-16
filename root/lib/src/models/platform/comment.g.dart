@@ -83,11 +83,22 @@ class _$Comment extends Comment {
   final int createdAt;
   @override
   final String text;
+  @override
+  final ObjectChangeType changeType;
+  @override
+  final SendingStatus status;
 
   factory _$Comment([void Function(CommentBuilder) updates]) =>
       (new CommentBuilder()..update(updates)).build();
 
-  _$Comment._({this.id, this.movieId, this.uid, this.createdAt, this.text})
+  _$Comment._(
+      {this.id,
+      this.movieId,
+      this.uid,
+      this.createdAt,
+      this.text,
+      this.changeType,
+      this.status})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Comment', 'id');
@@ -121,15 +132,23 @@ class _$Comment extends Comment {
         movieId == other.movieId &&
         uid == other.uid &&
         createdAt == other.createdAt &&
-        text == other.text;
+        text == other.text &&
+        changeType == other.changeType &&
+        status == other.status;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, id.hashCode), movieId.hashCode), uid.hashCode),
-            createdAt.hashCode),
-        text.hashCode));
+        $jc(
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, id.hashCode), movieId.hashCode),
+                        uid.hashCode),
+                    createdAt.hashCode),
+                text.hashCode),
+            changeType.hashCode),
+        status.hashCode));
   }
 
   @override
@@ -139,7 +158,9 @@ class _$Comment extends Comment {
           ..add('movieId', movieId)
           ..add('uid', uid)
           ..add('createdAt', createdAt)
-          ..add('text', text))
+          ..add('text', text)
+          ..add('changeType', changeType)
+          ..add('status', status))
         .toString();
   }
 }
@@ -167,6 +188,15 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
   String get text => _$this._text;
   set text(String text) => _$this._text = text;
 
+  ObjectChangeType _changeType;
+  ObjectChangeType get changeType => _$this._changeType;
+  set changeType(ObjectChangeType changeType) =>
+      _$this._changeType = changeType;
+
+  SendingStatus _status;
+  SendingStatus get status => _$this._status;
+  set status(SendingStatus status) => _$this._status = status;
+
   CommentBuilder();
 
   CommentBuilder get _$this {
@@ -176,6 +206,8 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
       _uid = _$v.uid;
       _createdAt = _$v.createdAt;
       _text = _$v.text;
+      _changeType = _$v.changeType;
+      _status = _$v.status;
       _$v = null;
     }
     return this;
@@ -202,7 +234,9 @@ class CommentBuilder implements Builder<Comment, CommentBuilder> {
             movieId: movieId,
             uid: uid,
             createdAt: createdAt,
-            text: text);
+            text: text,
+            changeType: changeType,
+            status: status);
     replace(_$result);
     return _$result;
   }
