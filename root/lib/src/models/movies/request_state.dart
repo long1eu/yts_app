@@ -7,6 +7,7 @@ library request_state;
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:hive/hive.dart';
+import 'package:meta/meta.dart';
 
 import 'serializers.dart';
 
@@ -18,7 +19,9 @@ abstract class RequestState implements Built<RequestState, RequestStateBuilder> 
 
   factory RequestState.initialState() {
     return _$RequestState((RequestStateBuilder b) {
-      b.page = 1;
+      b
+        ..page = 1
+        ..isLoading = false;
     });
   }
 
@@ -33,6 +36,16 @@ abstract class RequestState implements Built<RequestState, RequestStateBuilder> 
   @HiveField(1)
   @BuiltValueField(wireName: 'minimum_rating')
   int get minimumRating;
+
+  bool get isLoading;
+
+  RequestState copyWith({
+    @required int minimumRating,
+  }) {
+    return rebuild((RequestStateBuilder b) {
+      b.minimumRating = minimumRating ?? this.minimumRating;
+    });
+  }
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

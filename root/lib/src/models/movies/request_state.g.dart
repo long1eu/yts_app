@@ -21,6 +21,9 @@ class _$RequestStateSerializer implements StructuredSerializer<RequestState> {
     final result = <Object>[
       'page',
       serializers.serialize(object.page, specifiedType: const FullType(int)),
+      'isLoading',
+      serializers.serialize(object.isLoading,
+          specifiedType: const FullType(bool)),
     ];
     if (object.minimumRating != null) {
       result
@@ -50,6 +53,10 @@ class _$RequestStateSerializer implements StructuredSerializer<RequestState> {
           result.minimumRating = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'isLoading':
+          result.isLoading = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -62,13 +69,19 @@ class _$RequestState extends RequestState {
   final int page;
   @override
   final int minimumRating;
+  @override
+  final bool isLoading;
 
   factory _$RequestState([void Function(RequestStateBuilder) updates]) =>
       (new RequestStateBuilder()..update(updates)).build();
 
-  _$RequestState._({this.page, this.minimumRating}) : super._() {
+  _$RequestState._({this.page, this.minimumRating, this.isLoading})
+      : super._() {
     if (page == null) {
       throw new BuiltValueNullFieldError('RequestState', 'page');
+    }
+    if (isLoading == null) {
+      throw new BuiltValueNullFieldError('RequestState', 'isLoading');
     }
   }
 
@@ -84,19 +97,22 @@ class _$RequestState extends RequestState {
     if (identical(other, this)) return true;
     return other is RequestState &&
         page == other.page &&
-        minimumRating == other.minimumRating;
+        minimumRating == other.minimumRating &&
+        isLoading == other.isLoading;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, page.hashCode), minimumRating.hashCode));
+    return $jf($jc($jc($jc(0, page.hashCode), minimumRating.hashCode),
+        isLoading.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('RequestState')
           ..add('page', page)
-          ..add('minimumRating', minimumRating))
+          ..add('minimumRating', minimumRating)
+          ..add('isLoading', isLoading))
         .toString();
   }
 }
@@ -113,12 +129,17 @@ class RequestStateBuilder
   int get minimumRating => _$this._minimumRating;
   set minimumRating(int minimumRating) => _$this._minimumRating = minimumRating;
 
+  bool _isLoading;
+  bool get isLoading => _$this._isLoading;
+  set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+
   RequestStateBuilder();
 
   RequestStateBuilder get _$this {
     if (_$v != null) {
       _page = _$v.page;
       _minimumRating = _$v.minimumRating;
+      _isLoading = _$v.isLoading;
       _$v = null;
     }
     return this;
@@ -139,8 +160,9 @@ class RequestStateBuilder
 
   @override
   _$RequestState build() {
-    final _$result =
-        _$v ?? new _$RequestState._(page: page, minimumRating: minimumRating);
+    final _$result = _$v ??
+        new _$RequestState._(
+            page: page, minimumRating: minimumRating, isLoading: isLoading);
     replace(_$result);
     return _$result;
   }
