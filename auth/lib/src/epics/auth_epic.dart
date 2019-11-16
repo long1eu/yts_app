@@ -18,6 +18,7 @@ class AuthEpic {
   Epic<AuthState> get epic {
     return combineEpics<AuthState>(<Epic<AuthState>>[
       TypedEpic<AuthState, Bootstrap>(_bootstrap),
+      TypedEpic<AuthState, Authenticate>(_authenticate),
     ]);
   }
 
@@ -26,5 +27,14 @@ class AuthEpic {
         .flatMap((Bootstrap action) => _authApi.authChange)
         .map<AuthAction>((User user) => BootstrapSuccessful(user))
         .onErrorReturnWith((dynamic error) => BootstrapError(error));
+  }
+
+  Stream<AuthAction> _authenticate(Stream<Authenticate> actions, EpicStore<AuthState> store) {
+    return Observable<Authenticate>(actions) //
+        .flatMap<AuthAction>((Authenticate action) =>
+            Observable<User>.fromFuture(_authApi.login(action.type, store.state.registerInfo))
+                .map<AuthAction>((User user) => AuthenticateSuccessful(user))
+                .onErrorReturnWith((dynamic error) => AuthenticateError(error))
+                .doOnData(action.response));
   }
 }

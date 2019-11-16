@@ -11,3 +11,5 @@ abstract class ErrorAction implements AppAction {
 
   Object get error;
 }
+
+typedef ActionResponse = void Function(dynamic action);

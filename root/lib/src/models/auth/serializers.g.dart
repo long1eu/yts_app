@@ -8,6 +8,7 @@ part of auth_serializers;
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthState.serializer)
+      ..add(RegisterInfo.serializer)
       ..add(User.serializer))
     .build();
 

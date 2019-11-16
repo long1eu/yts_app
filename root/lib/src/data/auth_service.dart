@@ -10,22 +10,25 @@ abstract class AuthService {
 
   Stream<User> get authStateChanged;
 
+  Future<User> createUserWithEmailAndPassword(RegisterInfo info);
+
   Future<User> signInWithCredential(AuthCredential credential);
 
   Future<void> signOut();
+
+  Future<List<String>> fetchSignInMethodsForEmail(String email);
 }
 
 class AuthCredential {
   const AuthCredential._(this.type, this.data);
 
-  factory AuthCredential.email({@required String email, @required String password}) {
-    return AuthCredential._(
-        CredentialType.email, <String, String>{'email': email, 'password': password});
+  factory AuthCredential.email(RegisterInfo info) {
+    return AuthCredential._(CredentialType.email, <String, String>{'email': info.email, 'password': info.password});
   }
 
-  factory AuthCredential.google({@required String idToken, @required String accessToken}) {
+  factory AuthCredential.google(GoogleAuthentication auth) {
     return AuthCredential._(
-        CredentialType.google, <String, String>{'idToken': idToken, 'accessToken': accessToken});
+        CredentialType.google, <String, String>{'idToken': auth.idToken, 'accessToken': auth.accessToken});
   }
 
   final CredentialType type;
@@ -85,8 +88,10 @@ class GoogleAuthentication {
   const GoogleAuthentication({
     @required this.idToken,
     @required this.accessToken,
+    @required this.account,
   });
 
   final String idToken;
   final String accessToken;
+  final GoogleAccount account;
 }

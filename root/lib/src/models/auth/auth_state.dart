@@ -9,6 +9,7 @@ import 'package:built_value/serializer.dart';
 import 'package:root/src/models/auth/serializers.dart';
 
 import 'index.dart';
+import 'register_info.dart';
 
 part 'auth_state.g.dart';
 
@@ -21,6 +22,8 @@ abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
   AuthState._();
 
   User get user;
+
+  RegisterInfo get registerInfo;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

@@ -20,6 +20,9 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
     final result = <Object>[
       'user',
       serializers.serialize(object.user, specifiedType: const FullType(User)),
+      'registerInfo',
+      serializers.serialize(object.registerInfo,
+          specifiedType: const FullType(RegisterInfo)),
     ];
 
     return result;
@@ -40,6 +43,10 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(User)) as User);
           break;
+        case 'registerInfo':
+          result.registerInfo.replace(serializers.deserialize(value,
+              specifiedType: const FullType(RegisterInfo)) as RegisterInfo);
+          break;
       }
     }
 
@@ -50,13 +57,18 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
 class _$AuthState extends AuthState {
   @override
   final User user;
+  @override
+  final RegisterInfo registerInfo;
 
   factory _$AuthState([void Function(AuthStateBuilder) updates]) =>
       (new AuthStateBuilder()..update(updates)).build();
 
-  _$AuthState._({this.user}) : super._() {
+  _$AuthState._({this.user, this.registerInfo}) : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('AuthState', 'user');
+    }
+    if (registerInfo == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'registerInfo');
     }
   }
 
@@ -70,17 +82,21 @@ class _$AuthState extends AuthState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AuthState && user == other.user;
+    return other is AuthState &&
+        user == other.user &&
+        registerInfo == other.registerInfo;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, user.hashCode));
+    return $jf($jc($jc(0, user.hashCode), registerInfo.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AuthState')..add('user', user))
+    return (newBuiltValueToStringHelper('AuthState')
+          ..add('user', user)
+          ..add('registerInfo', registerInfo))
         .toString();
   }
 }
@@ -92,11 +108,18 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   UserBuilder get user => _$this._user ??= new UserBuilder();
   set user(UserBuilder user) => _$this._user = user;
 
+  RegisterInfoBuilder _registerInfo;
+  RegisterInfoBuilder get registerInfo =>
+      _$this._registerInfo ??= new RegisterInfoBuilder();
+  set registerInfo(RegisterInfoBuilder registerInfo) =>
+      _$this._registerInfo = registerInfo;
+
   AuthStateBuilder();
 
   AuthStateBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
+      _registerInfo = _$v.registerInfo?.toBuilder();
       _$v = null;
     }
     return this;
@@ -119,12 +142,16 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   _$AuthState build() {
     _$AuthState _$result;
     try {
-      _$result = _$v ?? new _$AuthState._(user: user.build());
+      _$result = _$v ??
+          new _$AuthState._(
+              user: user.build(), registerInfo: registerInfo.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         user.build();
+        _$failedField = 'registerInfo';
+        registerInfo.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AuthState', _$failedField, e.toString());
