@@ -4,3 +4,4 @@
 
 export 'auth_service.dart';
 export 'errors.dart';
+export 'http_service.dart';

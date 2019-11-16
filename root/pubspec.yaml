@@ -13,6 +13,7 @@ dependencies:
   redux_logging: ^0.3.0
   redux_epics: ^0.11.0
   rxdart: ^0.22.6
+  http: ^0.12.0+2
   hive:
     git: https://github.com/long1eu/hive
 
