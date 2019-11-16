@@ -23,6 +23,15 @@ abstract class User implements Built<User, UserBuilder> {
   @HiveField(0)
   String get uid;
 
+  @HiveField(1)
+  String get email;
+
+  @HiveField(2)
+  String get photo;
+
+  @HiveField(3)
+  String get displayName;
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<User> get serializer => _$userSerializer;

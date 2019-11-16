@@ -10,6 +10,7 @@ environment:
 dependencies:
   root:
     path: ../root
+  rxdart: ^0.22.6
 
 dev_dependencies:
   pedantic: ^1.8.0

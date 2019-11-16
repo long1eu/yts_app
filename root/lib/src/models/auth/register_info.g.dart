@@ -1,27 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of user;
+part of register_info;
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<User> _$userSerializer = new _$UserSerializer();
+Serializer<RegisterInfo> _$registerInfoSerializer =
+    new _$RegisterInfoSerializer();
 
-class _$UserSerializer implements StructuredSerializer<User> {
+class _$RegisterInfoSerializer implements StructuredSerializer<RegisterInfo> {
   @override
-  final Iterable<Type> types = const [User, _$User];
+  final Iterable<Type> types = const [RegisterInfo, _$RegisterInfo];
   @override
-  final String wireName = 'User';
+  final String wireName = 'RegisterInfo';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, User object,
+  Iterable<Object> serialize(Serializers serializers, RegisterInfo object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'uid',
-      serializers.serialize(object.uid, specifiedType: const FullType(String)),
       'email',
       serializers.serialize(object.email,
+          specifiedType: const FullType(String)),
+      'password',
+      serializers.serialize(object.password,
           specifiedType: const FullType(String)),
       'photo',
       serializers.serialize(object.photo,
@@ -35,9 +37,9 @@ class _$UserSerializer implements StructuredSerializer<User> {
   }
 
   @override
-  User deserialize(Serializers serializers, Iterable<Object> serialized,
+  RegisterInfo deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new UserBuilder();
+    final result = new RegisterInfoBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -45,12 +47,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'uid':
-          result.uid = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
         case 'email':
           result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'password':
+          result.password = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'photo':
@@ -68,47 +70,48 @@ class _$UserSerializer implements StructuredSerializer<User> {
   }
 }
 
-class _$User extends User {
-  @override
-  final String uid;
+class _$RegisterInfo extends RegisterInfo {
   @override
   final String email;
+  @override
+  final String password;
   @override
   final String photo;
   @override
   final String displayName;
 
-  factory _$User([void Function(UserBuilder) updates]) =>
-      (new UserBuilder()..update(updates)).build();
+  factory _$RegisterInfo([void Function(RegisterInfoBuilder) updates]) =>
+      (new RegisterInfoBuilder()..update(updates)).build();
 
-  _$User._({this.uid, this.email, this.photo, this.displayName}) : super._() {
-    if (uid == null) {
-      throw new BuiltValueNullFieldError('User', 'uid');
-    }
+  _$RegisterInfo._({this.email, this.password, this.photo, this.displayName})
+      : super._() {
     if (email == null) {
-      throw new BuiltValueNullFieldError('User', 'email');
+      throw new BuiltValueNullFieldError('RegisterInfo', 'email');
+    }
+    if (password == null) {
+      throw new BuiltValueNullFieldError('RegisterInfo', 'password');
     }
     if (photo == null) {
-      throw new BuiltValueNullFieldError('User', 'photo');
+      throw new BuiltValueNullFieldError('RegisterInfo', 'photo');
     }
     if (displayName == null) {
-      throw new BuiltValueNullFieldError('User', 'displayName');
+      throw new BuiltValueNullFieldError('RegisterInfo', 'displayName');
     }
   }
 
   @override
-  User rebuild(void Function(UserBuilder) updates) =>
+  RegisterInfo rebuild(void Function(RegisterInfoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  UserBuilder toBuilder() => new UserBuilder()..replace(this);
+  RegisterInfoBuilder toBuilder() => new RegisterInfoBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is User &&
-        uid == other.uid &&
+    return other is RegisterInfo &&
         email == other.email &&
+        password == other.password &&
         photo == other.photo &&
         displayName == other.displayName;
   }
@@ -116,31 +119,32 @@ class _$User extends User {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, uid.hashCode), email.hashCode), photo.hashCode),
+        $jc($jc($jc(0, email.hashCode), password.hashCode), photo.hashCode),
         displayName.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('User')
-          ..add('uid', uid)
+    return (newBuiltValueToStringHelper('RegisterInfo')
           ..add('email', email)
+          ..add('password', password)
           ..add('photo', photo)
           ..add('displayName', displayName))
         .toString();
   }
 }
 
-class UserBuilder implements Builder<User, UserBuilder> {
-  _$User _$v;
-
-  String _uid;
-  String get uid => _$this._uid;
-  set uid(String uid) => _$this._uid = uid;
+class RegisterInfoBuilder
+    implements Builder<RegisterInfo, RegisterInfoBuilder> {
+  _$RegisterInfo _$v;
 
   String _email;
   String get email => _$this._email;
   set email(String email) => _$this._email = email;
+
+  String _password;
+  String get password => _$this._password;
+  set password(String password) => _$this._password = password;
 
   String _photo;
   String get photo => _$this._photo;
@@ -150,12 +154,12 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String get displayName => _$this._displayName;
   set displayName(String displayName) => _$this._displayName = displayName;
 
-  UserBuilder();
+  RegisterInfoBuilder();
 
-  UserBuilder get _$this {
+  RegisterInfoBuilder get _$this {
     if (_$v != null) {
-      _uid = _$v.uid;
       _email = _$v.email;
+      _password = _$v.password;
       _photo = _$v.photo;
       _displayName = _$v.displayName;
       _$v = null;
@@ -164,64 +168,29 @@ class UserBuilder implements Builder<User, UserBuilder> {
   }
 
   @override
-  void replace(User other) {
+  void replace(RegisterInfo other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$User;
+    _$v = other as _$RegisterInfo;
   }
 
   @override
-  void update(void Function(UserBuilder) updates) {
+  void update(void Function(RegisterInfoBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$User build() {
+  _$RegisterInfo build() {
     final _$result = _$v ??
-        new _$User._(
-            uid: uid, email: email, photo: photo, displayName: displayName);
+        new _$RegisterInfo._(
+            email: email,
+            password: password,
+            photo: photo,
+            displayName: displayName);
     replace(_$result);
     return _$result;
   }
 }
 
 // ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
-
-TypeAdapter<User> _$userTypeAdapter = new _$UserAdapter();
-
-class _$UserAdapter extends TypeAdapter<User> {
-  int get typeId => 0;
-
-  @override
-  User read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return (UserBuilder()
-          ..uid = fields[0]
-          ..email = fields[1]
-          ..photo = fields[2]
-          ..displayName = fields[3])
-        .build();
-  }
-
-  @override
-  void write(BinaryWriter writer, User obj) {
-    writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.uid)
-      ..writeByte(1)
-      ..write(obj.email)
-      ..writeByte(2)
-      ..write(obj.photo)
-      ..writeByte(3)
-      ..write(obj.displayName);
-  }
-}
