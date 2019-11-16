@@ -20,8 +20,6 @@ class _$MovieDataSerializer implements StructuredSerializer<MovieData> {
     final result = <Object>[
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
-      'likes',
-      serializers.serialize(object.likes, specifiedType: const FullType(int)),
       'comments',
       serializers.serialize(object.comments,
           specifiedType: const FullType(BuiltMap,
@@ -46,10 +44,6 @@ class _$MovieDataSerializer implements StructuredSerializer<MovieData> {
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'likes':
-          result.likes = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'comments':
           result.comments.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
@@ -68,19 +62,14 @@ class _$MovieData extends MovieData {
   @override
   final int id;
   @override
-  final int likes;
-  @override
   final BuiltMap<String, Comment> comments;
 
   factory _$MovieData([void Function(MovieDataBuilder) updates]) =>
       (new MovieDataBuilder()..update(updates)).build();
 
-  _$MovieData._({this.id, this.likes, this.comments}) : super._() {
+  _$MovieData._({this.id, this.comments}) : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('MovieData', 'id');
-    }
-    if (likes == null) {
-      throw new BuiltValueNullFieldError('MovieData', 'likes');
     }
     if (comments == null) {
       throw new BuiltValueNullFieldError('MovieData', 'comments');
@@ -97,23 +86,18 @@ class _$MovieData extends MovieData {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is MovieData &&
-        id == other.id &&
-        likes == other.likes &&
-        comments == other.comments;
+    return other is MovieData && id == other.id && comments == other.comments;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, id.hashCode), likes.hashCode), comments.hashCode));
+    return $jf($jc($jc(0, id.hashCode), comments.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MovieData')
           ..add('id', id)
-          ..add('likes', likes)
           ..add('comments', comments))
         .toString();
   }
@@ -126,10 +110,6 @@ class MovieDataBuilder implements Builder<MovieData, MovieDataBuilder> {
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
 
-  int _likes;
-  int get likes => _$this._likes;
-  set likes(int likes) => _$this._likes = likes;
-
   MapBuilder<String, Comment> _comments;
   MapBuilder<String, Comment> get comments =>
       _$this._comments ??= new MapBuilder<String, Comment>();
@@ -141,7 +121,6 @@ class MovieDataBuilder implements Builder<MovieData, MovieDataBuilder> {
   MovieDataBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
-      _likes = _$v.likes;
       _comments = _$v.comments?.toBuilder();
       _$v = null;
     }
@@ -165,8 +144,7 @@ class MovieDataBuilder implements Builder<MovieData, MovieDataBuilder> {
   _$MovieData build() {
     _$MovieData _$result;
     try {
-      _$result = _$v ??
-          new _$MovieData._(id: id, likes: likes, comments: comments.build());
+      _$result = _$v ?? new _$MovieData._(id: id, comments: comments.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -200,19 +178,14 @@ class _$MovieDataAdapter extends TypeAdapter<MovieData> {
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return (MovieDataBuilder()
-          ..id = fields[0]
-          ..likes = fields[1])
-        .build();
+    return (MovieDataBuilder()..id = fields[0]).build();
   }
 
   @override
   void write(BinaryWriter writer, MovieData obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.likes);
+      ..writeByte(0)
+      ..write(obj.id);
   }
 }

@@ -25,9 +25,6 @@ abstract class MovieData implements Built<MovieData, MovieDataBuilder> {
   @HiveField(0)
   int get id;
 
-  @HiveField(1)
-  int get likes;
-
   BuiltMap<String, Comment> get comments;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
