@@ -46,10 +46,11 @@ class FlutterHttpService implements root.HttpService {
   Future<Map<String, dynamic>> getMap(String path, {Map<String, dynamic> headers}) async {
     final Response response = await _client.get('https://$_host$path', headers: headers);
 
-    if (response.statusCode >= 200) {
+    if (response.statusCode >= 400) {
       return Future<dynamic>.error(root.ApiError(response.body));
     } else {
-      return Map<String, dynamic>.from(jsonDecode(response.body));
+      final dynamic data = jsonDecode(response.body);
+      return Map<String, dynamic>.from(data);
     }
   }
 }
