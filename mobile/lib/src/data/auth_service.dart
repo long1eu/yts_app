@@ -33,7 +33,7 @@ class FirebaseAuthService implements AuthService {
 
       return _toAppUser(await _firebaseAuth.currentUser());
     } on PlatformException catch (e) {
-      return Future<User>.error(_getError(e, info.email));
+      return Future<User>.error(await _getError(e, info.email));
     }
   }
 
@@ -64,7 +64,7 @@ class FirebaseAuthService implements AuthService {
       final AuthResult fbUser = await _firebaseAuth.signInWithCredential(fbCredential);
       return _toAppUser(fbUser.user);
     } on PlatformException catch (e) {
-      return Future<User>.error(_getError(e, email));
+      return Future<User>.error(await _getError(e, email));
     }
   }
 
