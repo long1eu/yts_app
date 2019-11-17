@@ -57,7 +57,7 @@ class _PasswordPageState extends State<PasswordPage> with StoreMixin<PasswordPag
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      final ImageGrid image = ImageGrid();
+                      final ImageGrid image = ImageGrid(color: (Colors.accents.toList()..shuffle()).first.value);
                       dispatch(SetImageGrid(image));
                       dispatch(UpdateRegisterData(photo: image.encode));
                     },

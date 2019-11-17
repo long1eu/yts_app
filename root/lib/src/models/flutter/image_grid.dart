@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:meta/meta.dart';
 
 import 'serializers.dart';
 
@@ -21,7 +22,7 @@ const int _kBaseSeed = 6;
 const String _kMatrixPattern = 'matrix:<:>:';
 
 abstract class ImageGrid implements Built<ImageGrid, ImageGridBuilder> {
-  factory ImageGrid({double width = 120, double height = 120, int color}) {
+  factory ImageGrid({double width = 120, double height = 120, @required int color}) {
     return _$ImageGrid((ImageGridBuilder b) {
       b
         ..width = width
