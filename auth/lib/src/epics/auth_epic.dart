@@ -20,6 +20,7 @@ class AuthEpic {
       TypedEpic<AuthState, Bootstrap>(_bootstrap),
       TypedEpic<AuthState, Authenticate>(_authenticate),
       TypedEpic<AuthState, GetEmailInfo>(_getEmailInfo),
+      TypedEpic<AuthState, SignOut>(_signOut),
     ]);
   }
 
@@ -48,5 +49,12 @@ class AuthEpic {
                 .map<AuthAction>((List<String> providers) => GetEmailInfoSuccessful(providers, action.email))
                 .onErrorReturnWith((dynamic error) => GetEmailInfoError(error))
                 .doOnData(action.response));
+  }
+
+  Stream<AuthAction> _signOut(Stream<SignOut> actions, EpicStore<AuthState> store) {
+    return Observable<SignOut>(actions) //
+        .flatMap((_) => Observable<void>.fromFuture(_authApi.signOut())
+            .mapTo<AuthAction>(SignOutSuccessful())
+            .onErrorReturnWith((dynamic error) => SignOutError(error)));
   }
 }

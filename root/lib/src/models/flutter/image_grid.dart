@@ -61,6 +61,10 @@ abstract class ImageGrid implements Built<ImageGrid, ImageGridBuilder> {
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<ImageGrid> get serializer => _$imageGridSerializer;
+
+  ImageGrid copyWith({double size}) {
+    return ImageGrid(color: color, width: size, height: size);
+  }
 }
 
 BuiltList<BuiltList<int>> _generatedGrid() {

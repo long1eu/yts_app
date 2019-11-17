@@ -57,4 +57,6 @@ class AuthApi {
   }
 
   Future<void> _ensureUserRecord(User user) {}
+
+  Future<void> signOut() => _authService.signOut();
 }
