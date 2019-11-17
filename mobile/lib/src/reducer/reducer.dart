@@ -14,6 +14,7 @@ Reducer<AppState> reducer = combineReducers<AppState>(<Reducer<AppState>>[
 ]);
 
 AppState _moduleReducers(AppState state, dynamic action) {
+  print(action);
   if (action is! AppAction) {
     throw StateError('This actions is not an AppAction. ${action.runtimeType}\n$action');
   }

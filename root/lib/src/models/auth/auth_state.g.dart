@@ -18,13 +18,16 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
   Iterable<Object> serialize(Serializers serializers, AuthState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'user',
-      serializers.serialize(object.user, specifiedType: const FullType(User)),
       'registerInfo',
       serializers.serialize(object.registerInfo,
           specifiedType: const FullType(RegisterInfo)),
     ];
-
+    if (object.user != null) {
+      result
+        ..add('user')
+        ..add(serializers.serialize(object.user,
+            specifiedType: const FullType(User)));
+    }
     return result;
   }
 
@@ -64,9 +67,6 @@ class _$AuthState extends AuthState {
       (new AuthStateBuilder()..update(updates)).build();
 
   _$AuthState._({this.user, this.registerInfo}) : super._() {
-    if (user == null) {
-      throw new BuiltValueNullFieldError('AuthState', 'user');
-    }
     if (registerInfo == null) {
       throw new BuiltValueNullFieldError('AuthState', 'registerInfo');
     }
@@ -144,12 +144,12 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
     try {
       _$result = _$v ??
           new _$AuthState._(
-              user: user.build(), registerInfo: registerInfo.build());
+              user: _user?.build(), registerInfo: registerInfo.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
-        user.build();
+        _user?.build();
         _$failedField = 'registerInfo';
         registerInfo.build();
       } catch (e) {

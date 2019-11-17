@@ -19,15 +19,17 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
   Iterable<Object> serialize(Serializers serializers, PlatformState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'selectedMovieId',
-      serializers.serialize(object.selectedMovieId,
-          specifiedType: const FullType(int)),
       'movieData',
       serializers.serialize(object.movieData,
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(MovieData)])),
     ];
-
+    if (object.selectedMovieId != null) {
+      result
+        ..add('selectedMovieId')
+        ..add(serializers.serialize(object.selectedMovieId,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -71,9 +73,6 @@ class _$PlatformState extends PlatformState {
       (new PlatformStateBuilder()..update(updates)).build();
 
   _$PlatformState._({this.selectedMovieId, this.movieData}) : super._() {
-    if (selectedMovieId == null) {
-      throw new BuiltValueNullFieldError('PlatformState', 'selectedMovieId');
-    }
     if (movieData == null) {
       throw new BuiltValueNullFieldError('PlatformState', 'movieData');
     }
