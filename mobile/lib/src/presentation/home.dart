@@ -4,11 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile/src/container/user_container.dart';
+import 'package:mobile/src/presentation/home/home_page.dart';
 import 'package:mobile/src/presentation/login/login_page.dart';
 import 'package:root/auth.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
