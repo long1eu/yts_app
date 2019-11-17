@@ -8,8 +8,8 @@ import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:root/root.dart' as root;
 
-class HttpService implements root.HttpService {
-  const HttpService({
+class FlutterHttpService implements root.HttpService {
+  const FlutterHttpService({
     @required String host,
     @required Client client,
   })  : assert(host != null),

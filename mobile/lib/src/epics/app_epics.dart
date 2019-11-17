@@ -15,10 +15,12 @@ class AppEpics {
     @required AuthService authService,
     @required HttpService httpService,
     @required DatabaseService databaseService,
+    @required GoogleService googleService,
   })  : assert(authService != null),
+        assert(googleService != null),
         assert(httpService != null),
         assert(databaseService != null),
-        _authEpic = auth.epic(authService: authService),
+        _authEpic = auth.epic(authService: authService, googleService: googleService),
         _moviesEpic = movies.epic(httpService: httpService),
         _platformEpic = platform.epic(databaseService: databaseService);
 

@@ -8,11 +8,13 @@ import 'package:root/root.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthApi {
-  const AuthApi({@required AuthService authService, @required GoogleProvider googleProvider})
-      : assert(authService != null),
-        assert(googleProvider != null),
+  AuthApi({
+    @required AuthService authService,
+    GoogleService googleService,
+    GoogleProvider googleProvider,
+  })  : assert(authService != null),
         _authService = authService,
-        _googleProvider = googleProvider;
+        _googleProvider = googleProvider ?? GoogleProvider(googleService: googleService);
 
   final AuthService _authService;
   final GoogleProvider _googleProvider;
