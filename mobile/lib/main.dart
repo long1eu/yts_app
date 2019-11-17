@@ -14,6 +14,7 @@ import 'package:mobile/src/data/http_service.dart';
 import 'package:mobile/src/epics/app_epics.dart';
 import 'package:mobile/src/models/app_state.dart';
 import 'package:mobile/src/models/serializers.dart';
+import 'package:mobile/src/presentation/home.dart';
 import 'package:mobile/src/reducer/reducer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
@@ -50,7 +51,7 @@ Future<void> main() async {
   );
 
   // start app
-  runApp(YtsApp(store: store));
+  runApp(YtsApp(store: store..dispatch(Bootstrap())));
 }
 
 class YtsApp extends StatelessWidget {
@@ -62,7 +63,10 @@ class YtsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(),
+      child: MaterialApp(
+        theme: ThemeData.dark(),
+        home: const HomePage(),
+      ),
     );
   }
 }

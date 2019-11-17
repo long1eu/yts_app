@@ -14,7 +14,7 @@ class FirebaseAuthService implements root.AuthService {
   final FirebaseAuth _firebaseAuth;
 
   @override
-  Stream<root.User> get authStateChanged => null;
+  Stream<root.User> get authStateChanged => _firebaseAuth.onAuthStateChanged.map(_toAppUser);
 
   @override
   Future<root.User> createUserWithEmailAndPassword(root.RegisterInfo info) async {
@@ -57,12 +57,14 @@ class FirebaseAuthService implements root.AuthService {
   Future<void> signOut() => _firebaseAuth.signOut();
 
   root.User _toAppUser(FirebaseUser fbUser) {
-    return root.User((root.UserBuilder b) {
-      b
-        ..uid = fbUser.uid
-        ..email = fbUser.email
-        ..photo = fbUser.photoUrl
-        ..displayName = fbUser.displayName;
-    });
+    return fbUser == null
+        ? null
+        : root.User((root.UserBuilder b) {
+            b
+              ..uid = fbUser.uid
+              ..email = fbUser.email
+              ..photo = fbUser.photoUrl
+              ..displayName = fbUser.displayName;
+          });
   }
 }

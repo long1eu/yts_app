@@ -22,7 +22,7 @@ class MoviesEpic {
   }
 
   Stream<MoviesAction> _getMovies(Stream<dynamic> actions, EpicStore<MoviesState> store) {
-    return Observable<GetMovies>(actions) //
+    return Observable<dynamic>(actions) //
         .whereType<GetMovies>()
         .flatMap((GetMovies action) => Observable<List<Movie>>.fromFuture(_ytsApi.getMovies(store.state.requestState))
             .map<MoviesAction>((List<Movie> movies) => GetMoviesSuccessful(movies))
