@@ -66,7 +66,15 @@ class YtsApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData.dark(),
         home: const HomePage(),
+        routes: <String, WidgetBuilder>{
+          AppRoutes.loginPage: (_) => const HomePage(),
+        },
       ),
     );
   }
+}
+
+class AppRoutes {
+  static const String home = '/';
+  static const String loginPage = '/loginPage';
 }
