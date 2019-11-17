@@ -10,6 +10,9 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:hive/hive.dart';
 import 'package:root/root.dart';
 
+import 'image_grid.dart';
+import 'index.dart';
+
 part 'serializers.g.dart';
 
 @SerializersFor(<Type>[

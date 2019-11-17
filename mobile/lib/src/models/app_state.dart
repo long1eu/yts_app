@@ -32,6 +32,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   PlatformState get platformState;
 
+  FlutterState get flutterState;
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<AppState> get serializer => _$appStateSerializer;

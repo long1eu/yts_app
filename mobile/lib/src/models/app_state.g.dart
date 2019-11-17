@@ -27,6 +27,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'platformState',
       serializers.serialize(object.platformState,
           specifiedType: const FullType(PlatformState)),
+      'flutterState',
+      serializers.serialize(object.flutterState,
+          specifiedType: const FullType(FlutterState)),
     ];
 
     return result;
@@ -55,6 +58,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.platformState.replace(serializers.deserialize(value,
               specifiedType: const FullType(PlatformState)) as PlatformState);
           break;
+        case 'flutterState':
+          result.flutterState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(FlutterState)) as FlutterState);
+          break;
       }
     }
 
@@ -69,11 +76,14 @@ class _$AppState extends AppState {
   final MoviesState moviesState;
   @override
   final PlatformState platformState;
+  @override
+  final FlutterState flutterState;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.authState, this.moviesState, this.platformState})
+  _$AppState._(
+      {this.authState, this.moviesState, this.platformState, this.flutterState})
       : super._() {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
@@ -83,6 +93,9 @@ class _$AppState extends AppState {
     }
     if (platformState == null) {
       throw new BuiltValueNullFieldError('AppState', 'platformState');
+    }
+    if (flutterState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'flutterState');
     }
   }
 
@@ -99,13 +112,16 @@ class _$AppState extends AppState {
     return other is AppState &&
         authState == other.authState &&
         moviesState == other.moviesState &&
-        platformState == other.platformState;
+        platformState == other.platformState &&
+        flutterState == other.flutterState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, authState.hashCode), moviesState.hashCode),
-        platformState.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, authState.hashCode), moviesState.hashCode),
+            platformState.hashCode),
+        flutterState.hashCode));
   }
 
   @override
@@ -113,7 +129,8 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('authState', authState)
           ..add('moviesState', moviesState)
-          ..add('platformState', platformState))
+          ..add('platformState', platformState)
+          ..add('flutterState', flutterState))
         .toString();
   }
 }
@@ -138,6 +155,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set platformState(PlatformStateBuilder platformState) =>
       _$this._platformState = platformState;
 
+  FlutterStateBuilder _flutterState;
+  FlutterStateBuilder get flutterState =>
+      _$this._flutterState ??= new FlutterStateBuilder();
+  set flutterState(FlutterStateBuilder flutterState) =>
+      _$this._flutterState = flutterState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -145,6 +168,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _authState = _$v.authState?.toBuilder();
       _moviesState = _$v.moviesState?.toBuilder();
       _platformState = _$v.platformState?.toBuilder();
+      _flutterState = _$v.flutterState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -171,7 +195,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               authState: authState.build(),
               moviesState: moviesState.build(),
-              platformState: platformState.build());
+              platformState: platformState.build(),
+              flutterState: flutterState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -181,6 +206,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         moviesState.build();
         _$failedField = 'platformState';
         platformState.build();
+        _$failedField = 'flutterState';
+        flutterState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

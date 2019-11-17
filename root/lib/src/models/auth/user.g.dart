@@ -23,14 +23,16 @@ class _$UserSerializer implements StructuredSerializer<User> {
       'email',
       serializers.serialize(object.email,
           specifiedType: const FullType(String)),
-      'photo',
-      serializers.serialize(object.photo,
-          specifiedType: const FullType(String)),
       'displayName',
       serializers.serialize(object.displayName,
           specifiedType: const FullType(String)),
     ];
-
+    if (object.photo != null) {
+      result
+        ..add('photo')
+        ..add(serializers.serialize(object.photo,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -77,6 +79,7 @@ class _$User extends User {
   final String photo;
   @override
   final String displayName;
+  ImageGrid __image;
 
   factory _$User([void Function(UserBuilder) updates]) =>
       (new UserBuilder()..update(updates)).build();
@@ -88,13 +91,13 @@ class _$User extends User {
     if (email == null) {
       throw new BuiltValueNullFieldError('User', 'email');
     }
-    if (photo == null) {
-      throw new BuiltValueNullFieldError('User', 'photo');
-    }
     if (displayName == null) {
       throw new BuiltValueNullFieldError('User', 'displayName');
     }
   }
+
+  @override
+  ImageGrid get image => __image ??= super.image;
 
   @override
   User rebuild(void Function(UserBuilder) updates) =>
