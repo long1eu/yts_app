@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "867629329496",
+    "firebase_url": "https://yts1eu.firebaseio.com",
+    "project_id": "yts1eu",
+    "storage_bucket": "yts1eu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867629329496:android:4c7c4f366341d10addae2d",
+        "android_client_info": {
+          "package_name": "eu.long1.yts.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867629329496-ekcv592io8el7q9gbbk3kmr9i2sghbi7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7ql8w12ZOsSZHgCoW3Mdwrx8GNvY3WS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867629329496-ekcv592io8el7q9gbbk3kmr9i2sghbi7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "867629329496-7lg577drdf9m12pdthtqil4tvrl20l85.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "eu.long1.yts"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
