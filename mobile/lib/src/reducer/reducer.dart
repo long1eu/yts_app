@@ -9,11 +9,14 @@ import 'package:movies/movies.dart' as movies;
 import 'package:redux/redux.dart';
 import 'package:root/root.dart';
 
+import 'flutter_reducer.dart' as flutter;
+
 Reducer<AppState> reducer = combineReducers<AppState>(<Reducer<AppState>>[
   _moduleReducers,
 ]);
 
 AppState _moduleReducers(AppState state, dynamic action) {
+  print(action);
   if (action is! AppAction) {
     throw StateError('This actions is not an AppAction. ${action.runtimeType}\n$action');
   }
@@ -22,6 +25,7 @@ AppState _moduleReducers(AppState state, dynamic action) {
     b
       ..authState = auth.reducer(state.authState, action).toBuilder()
       ..moviesState = movies.reducer(state.moviesState, action).toBuilder()
-      ..platformState = platform.reducer(state.platformState, action).toBuilder();
+      ..platformState = platform.reducer(state.platformState, action).toBuilder()
+      ..flutterState = flutter.reducer(state.flutterState, action).toBuilder();
   });
 }

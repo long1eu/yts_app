@@ -18,7 +18,12 @@ class _$RegisterInfoSerializer implements StructuredSerializer<RegisterInfo> {
   @override
   Iterable<Object> serialize(Serializers serializers, RegisterInfo object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
+    final result = <Object>[
+      'providers',
+      serializers.serialize(object.providers,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+    ];
     if (object.email != null) {
       result
         ..add('email')
@@ -73,6 +78,12 @@ class _$RegisterInfoSerializer implements StructuredSerializer<RegisterInfo> {
           result.displayName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'providers':
+          result.providers.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<dynamic>);
+          break;
       }
     }
 
@@ -89,12 +100,19 @@ class _$RegisterInfo extends RegisterInfo {
   final String photo;
   @override
   final String displayName;
+  @override
+  final BuiltList<String> providers;
 
   factory _$RegisterInfo([void Function(RegisterInfoBuilder) updates]) =>
       (new RegisterInfoBuilder()..update(updates)).build();
 
-  _$RegisterInfo._({this.email, this.password, this.photo, this.displayName})
-      : super._();
+  _$RegisterInfo._(
+      {this.email, this.password, this.photo, this.displayName, this.providers})
+      : super._() {
+    if (providers == null) {
+      throw new BuiltValueNullFieldError('RegisterInfo', 'providers');
+    }
+  }
 
   @override
   RegisterInfo rebuild(void Function(RegisterInfoBuilder) updates) =>
@@ -110,14 +128,16 @@ class _$RegisterInfo extends RegisterInfo {
         email == other.email &&
         password == other.password &&
         photo == other.photo &&
-        displayName == other.displayName;
+        displayName == other.displayName &&
+        providers == other.providers;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, email.hashCode), password.hashCode), photo.hashCode),
-        displayName.hashCode));
+        $jc($jc($jc($jc(0, email.hashCode), password.hashCode), photo.hashCode),
+            displayName.hashCode),
+        providers.hashCode));
   }
 
   @override
@@ -126,7 +146,8 @@ class _$RegisterInfo extends RegisterInfo {
           ..add('email', email)
           ..add('password', password)
           ..add('photo', photo)
-          ..add('displayName', displayName))
+          ..add('displayName', displayName)
+          ..add('providers', providers))
         .toString();
   }
 }
@@ -151,6 +172,11 @@ class RegisterInfoBuilder
   String get displayName => _$this._displayName;
   set displayName(String displayName) => _$this._displayName = displayName;
 
+  ListBuilder<String> _providers;
+  ListBuilder<String> get providers =>
+      _$this._providers ??= new ListBuilder<String>();
+  set providers(ListBuilder<String> providers) => _$this._providers = providers;
+
   RegisterInfoBuilder();
 
   RegisterInfoBuilder get _$this {
@@ -159,6 +185,7 @@ class RegisterInfoBuilder
       _password = _$v.password;
       _photo = _$v.photo;
       _displayName = _$v.displayName;
+      _providers = _$v.providers?.toBuilder();
       _$v = null;
     }
     return this;
@@ -179,12 +206,26 @@ class RegisterInfoBuilder
 
   @override
   _$RegisterInfo build() {
-    final _$result = _$v ??
-        new _$RegisterInfo._(
-            email: email,
-            password: password,
-            photo: photo,
-            displayName: displayName);
+    _$RegisterInfo _$result;
+    try {
+      _$result = _$v ??
+          new _$RegisterInfo._(
+              email: email,
+              password: password,
+              photo: photo,
+              displayName: displayName,
+              providers: providers.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'providers';
+        providers.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'RegisterInfo', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

@@ -12,8 +12,12 @@ import 'package:mobile/src/data/database_service.dart';
 import 'package:mobile/src/data/google_service.dart';
 import 'package:mobile/src/data/http_service.dart';
 import 'package:mobile/src/epics/app_epics.dart';
+import 'package:mobile/src/middleware/app_middleware.dart';
 import 'package:mobile/src/models/app_state.dart';
 import 'package:mobile/src/models/serializers.dart';
+import 'package:mobile/src/presentation/home.dart';
+import 'package:mobile/src/presentation/login/login_page.dart';
+import 'package:mobile/src/presentation/login/password_page.dart';
 import 'package:mobile/src/reducer/reducer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
@@ -27,6 +31,7 @@ Future<void> main() async {
   final Directory appDir = await getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
   registerHiveTypes();
+  final Box<dynamic> userBox = await Hive.openBox<dynamic>('user_box');
 
   // initialize epics
   final GoogleService googleService = FlutterGoogleService(google: GoogleSignIn());
@@ -38,19 +43,24 @@ Future<void> main() async {
     httpService: httpService,
     databaseService: databaseService,
     googleService: googleService,
+    userBox: userBox,
   );
+
+  // initialize middleware
+  final AppMiddleware appMiddleware = AppMiddleware(userBox: userBox);
 
   // initialize store
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
     middleware: <Middleware<AppState>>[
+      ...appMiddleware.middleware,
       EpicMiddleware<AppState>(epics.epic),
     ],
   );
 
   // start app
-  runApp(YtsApp(store: store));
+  runApp(YtsApp(store: store..dispatch(Bootstrap())));
 }
 
 class YtsApp extends StatelessWidget {
@@ -62,7 +72,23 @@ class YtsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(),
+      child: MaterialApp(
+        theme: ThemeData.dark().copyWith(
+          accentColor: const Color(0xFF62B729),
+        ),
+        home: const Home(),
+        routes: <String, WidgetBuilder>{
+          AppRoutes.loginPage: (_) => const LoginPage(),
+          AppRoutes.passwordPage: (_) => const PasswordPage(),
+        },
+      ),
     );
   }
+}
+
+class AppRoutes {
+  static const String home = '/';
+  static const String homePage = '/homePage';
+  static const String loginPage = '/loginPage';
+  static const String passwordPage = '/passwordPage';
 }

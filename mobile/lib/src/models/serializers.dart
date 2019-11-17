@@ -4,6 +4,7 @@
 
 library serializers;
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:hive/hive.dart';
@@ -13,11 +14,17 @@ part 'serializers.g.dart';
 
 @SerializersFor(<Type>[
   AuthState,
+  FlutterState,
+  ImageGrid,
   RegisterInfo,
   User,
 ])
 Serializers serializers = (_$serializers.toBuilder() //
-      ..addPlugin(StandardJsonPlugin()))
+      ..addPlugin(StandardJsonPlugin())
+      ..addBuilderFactory(
+        const FullType(BuiltList, <FullType>[FullType(int)]),
+        () => ListBuilder<int>(),
+      ))
     .build();
 
 @HiveTypes(<Type>[

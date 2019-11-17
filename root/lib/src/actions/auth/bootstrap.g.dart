@@ -71,11 +71,7 @@ class _$BootstrapSuccessful extends BootstrapSuccessful {
           [void Function(BootstrapSuccessfulBuilder) updates]) =>
       (new BootstrapSuccessfulBuilder()..update(updates)).build();
 
-  _$BootstrapSuccessful._({this.user}) : super._() {
-    if (user == null) {
-      throw new BuiltValueNullFieldError('BootstrapSuccessful', 'user');
-    }
-  }
+  _$BootstrapSuccessful._({this.user}) : super._();
 
   @override
   bool get isUnauthenticated => __isUnauthenticated ??= super.isUnauthenticated;
@@ -143,12 +139,12 @@ class BootstrapSuccessfulBuilder
   _$BootstrapSuccessful build() {
     _$BootstrapSuccessful _$result;
     try {
-      _$result = _$v ?? new _$BootstrapSuccessful._(user: user.build());
+      _$result = _$v ?? new _$BootstrapSuccessful._(user: _user?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
-        user.build();
+        _user?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'BootstrapSuccessful', _$failedField, e.toString());

@@ -4,6 +4,7 @@
 
 library register_info;
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -15,7 +16,9 @@ abstract class RegisterInfo implements Built<RegisterInfo, RegisterInfoBuilder> 
   factory RegisterInfo([void Function(RegisterInfoBuilder b) updates]) = _$RegisterInfo;
 
   factory RegisterInfo.initialState() {
-    return _$RegisterInfo();
+    return _$RegisterInfo((RegisterInfoBuilder b) {
+      b.providers = ListBuilder<String>();
+    });
   }
 
   factory RegisterInfo.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
@@ -33,6 +36,12 @@ abstract class RegisterInfo implements Built<RegisterInfo, RegisterInfoBuilder> 
 
   @nullable
   String get displayName;
+
+  BuiltList<String> get providers;
+
+  bool get isRegister {
+    return providers.isEmpty;
+  }
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

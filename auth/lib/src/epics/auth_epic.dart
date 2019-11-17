@@ -19,6 +19,7 @@ class AuthEpic {
     return combineEpics<AuthState>(<Epic<AuthState>>[
       TypedEpic<AuthState, Bootstrap>(_bootstrap),
       TypedEpic<AuthState, Authenticate>(_authenticate),
+      TypedEpic<AuthState, GetEmailInfo>(_getEmailInfo),
     ]);
   }
 
@@ -35,6 +36,17 @@ class AuthEpic {
             Observable<User>.fromFuture(_authApi.login(action.type, store.state.registerInfo))
                 .map<AuthAction>((User user) => AuthenticateSuccessful(user))
                 .onErrorReturnWith((dynamic error) => AuthenticateError(error))
+                .doOnData(action.response));
+  }
+
+  Stream<AuthAction> _getEmailInfo(Stream<GetEmailInfo> actions, EpicStore<AuthState> store) {
+    return Observable<GetEmailInfo>(actions) //
+        .debounceTime(const Duration(milliseconds: 500))
+        .distinct()
+        .switchMap((GetEmailInfo action) =>
+            Observable<List<String>>.fromFuture(_authApi.fetchSignInMethodsForEmail(action.email))
+                .map<AuthAction>((List<String> providers) => GetEmailInfoSuccessful(providers, action.email))
+                .onErrorReturnWith((dynamic error) => GetEmailInfoError(error))
                 .doOnData(action.response));
   }
 }

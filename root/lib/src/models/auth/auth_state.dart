@@ -26,6 +26,7 @@ abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
 
   AuthState._();
 
+  @nullable
   User get user;
 
   RegisterInfo get registerInfo;

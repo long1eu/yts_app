@@ -44,13 +44,16 @@ class AuthApi {
     return _authService.signInWithCredential(AuthCredential.google(auth));
   }
 
-  Future<User> _singInWithEmail(RegisterInfo info) async {
-    final List<String> providers = await _authService.fetchSignInMethodsForEmail(info.email);
-    if (providers.isEmpty) {
+  Future<User> _singInWithEmail(RegisterInfo info) {
+    if (info.isRegister) {
       return _authService.createUserWithEmailAndPassword(info);
     } else {
       return _authService.signInWithCredential(AuthCredential.email(info));
     }
+  }
+
+  Future<List<String>> fetchSignInMethodsForEmail(String email) {
+    return _authService.fetchSignInMethodsForEmail(email);
   }
 
   Future<void> _ensureUserRecord(User user) {}

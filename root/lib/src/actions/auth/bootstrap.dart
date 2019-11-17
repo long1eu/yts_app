@@ -32,6 +32,7 @@ abstract class BootstrapSuccessful //
 
   BootstrapSuccessful._();
 
+  @nullable
   User get user;
 
   @memoized

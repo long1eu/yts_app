@@ -3,7 +3,9 @@ import 'package:built_value/built_value.dart';
 import 'package:root/src/data/index.dart';
 
 export 'auth/index.dart';
+export 'flutter/index.dart';
 export 'movies/index.dart';
+export 'platform/index.dart';
 
 abstract class AppAction {
   const AppAction();
