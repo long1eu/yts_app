@@ -6,6 +6,8 @@ import 'package:auth/src/data/index.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/auth.dart';
+import 'package:root/movies.dart';
+import 'package:root/root.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthEpic {
@@ -24,10 +26,10 @@ class AuthEpic {
     ]);
   }
 
-  Stream<AuthAction> _bootstrap(Stream<Bootstrap> actions, EpicStore<AuthState> store) {
+  Stream<AppAction> _bootstrap(Stream<Bootstrap> actions, EpicStore<AuthState> store) {
     return Observable<Bootstrap>(actions) //
         .flatMap((Bootstrap action) => _authApi.authChange)
-        .map<AuthAction>((User user) => BootstrapSuccessful(user))
+        .expand<AppAction>((User user) => <AppAction>[BootstrapSuccessful(user), if (user != null) GetMovies()])
         .onErrorReturnWith((dynamic error) => BootstrapError(error));
   }
 
