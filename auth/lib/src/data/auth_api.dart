@@ -3,6 +3,7 @@
 // on 16/11/2019
 
 import 'package:auth/auth.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:root/root.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,18 +11,24 @@ import 'package:rxdart/rxdart.dart';
 class AuthApi {
   AuthApi({
     @required AuthService authService,
+    @required Box<dynamic> userBox,
     GoogleService googleService,
     GoogleProvider googleProvider,
   })  : assert(authService != null),
+        assert(userBox != null),
         _authService = authService,
-        _googleProvider = googleProvider ?? GoogleProvider(googleService: googleService);
+        _googleProvider = googleProvider ?? GoogleProvider(googleService: googleService),
+        _userBox = userBox;
 
   final AuthService _authService;
   final GoogleProvider _googleProvider;
+  final Box<dynamic> _userBox;
 
   Observable<User> get authChange {
     return Observable<User>(_authService.authStateChanged) //
-        .distinct();
+        .startWith(_userBox.get('user'))
+        .distinct()
+        .doOnData((User user) => _userBox.put('user', user));
   }
 
   Future<User> login(CredentialType type, RegisterInfo info) async {
