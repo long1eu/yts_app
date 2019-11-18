@@ -15,8 +15,14 @@ Epic<AuthState> epic({
   @required AuthService authService,
   @required GoogleService googleService,
   @required Box<dynamic> userBox,
+  @required DatabaseService databaseService,
 }) {
-  final AuthApi authApi = AuthApi(authService: authService, googleService: googleService, userBox: userBox);
+  final AuthApi authApi = AuthApi(
+    authService: authService,
+    googleService: googleService,
+    userBox: userBox,
+    databaseService: databaseService,
+  );
 
   return combineEpics<AuthState>(<Epic<AuthState>>[
     AuthEpic(authApi: authApi).epic,

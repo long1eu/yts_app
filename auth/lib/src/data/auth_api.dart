@@ -12,15 +12,19 @@ class AuthApi {
   AuthApi({
     @required AuthService authService,
     @required Box<dynamic> userBox,
+    @required DatabaseService databaseService,
     GoogleService googleService,
     GoogleProvider googleProvider,
   })  : assert(authService != null),
         assert(userBox != null),
+        assert(databaseService != null),
         _authService = authService,
         _googleProvider = googleProvider ?? GoogleProvider(googleService: googleService),
-        _userBox = userBox;
+        _userBox = userBox,
+        _databaseService = databaseService;
 
   final AuthService _authService;
+  final DatabaseService _databaseService;
   final GoogleProvider _googleProvider;
   final Box<dynamic> _userBox;
 
@@ -42,8 +46,7 @@ class AuthApi {
     }
 
     final User user = await task;
-    await _ensureUserRecord(user);
-    return user;
+    return _ensureUserRecord(user);
   }
 
   Future<User> _signInWithGoogle() async {
@@ -63,7 +66,15 @@ class AuthApi {
     return _authService.fetchSignInMethodsForEmail(email);
   }
 
-  Future<void> _ensureUserRecord(User user) {}
-
   Future<void> signOut() => _authService.signOut();
+
+  Future<User> _ensureUserRecord(User user) async {
+    final Map<String, dynamic> json = await _databaseService.get('users/${user.uid}');
+    if (json == null) {
+      await _databaseService.insert('users/${user.uid}', user.json);
+      return user;
+    }
+
+    return User.fromJson(json);
+  }
 }

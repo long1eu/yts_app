@@ -26,9 +26,17 @@ class AppEpics {
         assert(googleService != null),
         assert(httpService != null),
         assert(databaseService != null),
-        _authEpic = auth.epic(authService: authService, googleService: googleService, userBox: userBox),
+        _authEpic = auth.epic(
+          authService: authService,
+          googleService: googleService,
+          userBox: userBox,
+          databaseService: databaseService,
+        ),
         _moviesEpic = movies.epic(httpService: httpService),
-        _platformEpic = platform.epic(databaseService: databaseService, selectedMovie: selectedMovie),
+        _platformEpic = platform.epic(
+          databaseService: databaseService,
+          selectedMovie: selectedMovie,
+        ),
         _flutterEpic = flutter.epic(userBox: userBox);
 
   final Epic<AuthState> _authEpic;
