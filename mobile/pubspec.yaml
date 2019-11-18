@@ -1,6 +1,6 @@
 name: mobile
 description: A new Flutter project.
-version: 0.0.1
+version: 0.1.0
 
 environment:
   sdk: ">=2.5.0 <3.0.0"

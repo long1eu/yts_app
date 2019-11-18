@@ -1,6 +1,7 @@
 name: root
 description: A starting point for Dart libraries or applications.
-version: 0.0.1
+version: 0.1.0
+author: long1eu <lung.razvan@gmail.com>
 
 environment:
   sdk: '>=2.5.0 <3.0.0'
