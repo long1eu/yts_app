@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:root/root.dart';
 
 class RandomAvatar extends StatelessWidget {
-  const RandomAvatar({Key key, this.image}) : super(key: key);
+  const RandomAvatar({Key key, @required this.image}) : super(key: key);
 
   final ImageGrid image;
 
