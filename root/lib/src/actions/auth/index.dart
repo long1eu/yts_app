@@ -4,6 +4,12 @@
 
 import 'package:root/src/actions/index.dart';
 
+export 'authenticate.dart';
+export 'bootstrap.dart';
+export 'get_email_info.dart';
+export 'sign_out.dart';
+export 'update_register_data.dart';
+
 abstract class AuthAction implements AppAction {
   const AuthAction();
 }
