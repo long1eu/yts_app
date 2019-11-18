@@ -9,6 +9,8 @@ final Reducer<AuthState> reducer = combineReducers(<Reducer<AuthState>>[
   TypedReducer<AuthState, BootstrapSuccessful>(_bootstrapSuccessful),
   TypedReducer<AuthState, GetEmailInfoSuccessful>(_getEmailInfoSuccessful),
   TypedReducer<AuthState, UpdateRegisterData>(_updateRegisterData),
+  TypedReducer<AuthState, AddLike>(_addLike),
+  TypedReducer<AuthState, AddLikeError>(_addLikeError),
 ]);
 
 AuthState _bootstrapSuccessful(AuthState state, BootstrapSuccessful action) {
@@ -33,5 +35,21 @@ AuthState _updateRegisterData(AuthState state, UpdateRegisterData action) {
         ..password = action.password ?? b.password
         ..photo = action.photo ?? b.photo;
     }).toBuilder();
+  });
+}
+
+AuthState _addLike(AuthState state, AddLike action) {
+  return state.rebuild((AuthStateBuilder b) {
+    b.user.update((UserBuilder b) {
+      b.likes.add(action.movieId);
+    });
+  });
+}
+
+AuthState _addLikeError(AuthState state, AddLikeError action) {
+  return state.rebuild((AuthStateBuilder b) {
+    b.user.update((UserBuilder b) {
+      b.likes.remove(action.movieId);
+    });
   });
 }

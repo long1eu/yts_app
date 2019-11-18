@@ -4,6 +4,7 @@
 
 import 'package:auth/auth.dart';
 import 'package:auth/src/data/auth_api.dart';
+import 'package:auth/src/epics/user_epic.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -24,7 +25,10 @@ Epic<AuthState> epic({
     databaseService: databaseService,
   );
 
+  final UserApi userApi = UserApi(databaseService: databaseService);
+
   return combineEpics<AuthState>(<Epic<AuthState>>[
     AuthEpic(authApi: authApi).epic,
+    UserEpic(userApi: userApi).epic,
   ]);
 }

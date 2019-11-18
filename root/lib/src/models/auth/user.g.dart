@@ -33,6 +33,13 @@ class _$UserSerializer implements StructuredSerializer<User> {
         ..add(serializers.serialize(object.photo,
             specifiedType: const FullType(String)));
     }
+    if (object.likes != null) {
+      result
+        ..add('likes')
+        ..add(serializers.serialize(object.likes,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(int)])));
+    }
     return result;
   }
 
@@ -63,6 +70,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
           result.displayName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'likes':
+          result.likes.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(int)]))
+              as BuiltList<dynamic>);
+          break;
       }
     }
 
@@ -79,12 +92,15 @@ class _$User extends User {
   final String photo;
   @override
   final String displayName;
+  @override
+  final BuiltList<int> likes;
   ImageGrid __image;
 
   factory _$User([void Function(UserBuilder) updates]) =>
       (new UserBuilder()..update(updates)).build();
 
-  _$User._({this.uid, this.email, this.photo, this.displayName}) : super._() {
+  _$User._({this.uid, this.email, this.photo, this.displayName, this.likes})
+      : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('User', 'uid');
     }
@@ -113,14 +129,16 @@ class _$User extends User {
         uid == other.uid &&
         email == other.email &&
         photo == other.photo &&
-        displayName == other.displayName;
+        displayName == other.displayName &&
+        likes == other.likes;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, uid.hashCode), email.hashCode), photo.hashCode),
-        displayName.hashCode));
+        $jc($jc($jc($jc(0, uid.hashCode), email.hashCode), photo.hashCode),
+            displayName.hashCode),
+        likes.hashCode));
   }
 
   @override
@@ -129,7 +147,8 @@ class _$User extends User {
           ..add('uid', uid)
           ..add('email', email)
           ..add('photo', photo)
-          ..add('displayName', displayName))
+          ..add('displayName', displayName)
+          ..add('likes', likes))
         .toString();
   }
 }
@@ -153,6 +172,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String get displayName => _$this._displayName;
   set displayName(String displayName) => _$this._displayName = displayName;
 
+  ListBuilder<int> _likes;
+  ListBuilder<int> get likes => _$this._likes ??= new ListBuilder<int>();
+  set likes(ListBuilder<int> likes) => _$this._likes = likes;
+
   UserBuilder();
 
   UserBuilder get _$this {
@@ -161,6 +184,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _email = _$v.email;
       _photo = _$v.photo;
       _displayName = _$v.displayName;
+      _likes = _$v.likes?.toBuilder();
       _$v = null;
     }
     return this;
@@ -181,9 +205,26 @@ class UserBuilder implements Builder<User, UserBuilder> {
 
   @override
   _$User build() {
-    final _$result = _$v ??
-        new _$User._(
-            uid: uid, email: email, photo: photo, displayName: displayName);
+    _$User _$result;
+    try {
+      _$result = _$v ??
+          new _$User._(
+              uid: uid,
+              email: email,
+              photo: photo,
+              displayName: displayName,
+              likes: _likes?.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'likes';
+        _likes?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'User', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -210,14 +251,15 @@ class _$UserAdapter extends TypeAdapter<User> {
           ..uid = fields[0]
           ..email = fields[1]
           ..photo = fields[2]
-          ..displayName = fields[3])
+          ..displayName = fields[3]
+          ..likes = fields[4] == null ? null : ListBuilder<int>(fields[4]))
         .build();
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -225,6 +267,8 @@ class _$UserAdapter extends TypeAdapter<User> {
       ..writeByte(2)
       ..write(obj.photo)
       ..writeByte(3)
-      ..write(obj.displayName);
+      ..write(obj.displayName)
+      ..writeByte(4)
+      ..write(obj.likes?.toList());
   }
 }

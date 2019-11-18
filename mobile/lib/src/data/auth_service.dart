@@ -3,6 +3,7 @@
 // on 16/11/2019
 
 import 'package:auth/auth.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -79,7 +80,8 @@ class FirebaseAuthService implements AuthService {
               ..uid = fbUser.uid
               ..email = fbUser.email
               ..photo = fbUser.photoUrl
-              ..displayName = fbUser.displayName;
+              ..displayName = fbUser.displayName
+              ..likes = ListBuilder<int>();
           });
   }
 

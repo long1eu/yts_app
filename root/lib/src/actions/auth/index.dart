@@ -4,6 +4,7 @@
 
 import 'package:root/src/actions/index.dart';
 
+export 'add_like.dart';
 export 'authenticate.dart';
 export 'bootstrap.dart';
 export 'get_email_info.dart';

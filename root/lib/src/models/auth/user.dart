@@ -4,6 +4,7 @@
 
 library user;
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:hive/hive.dart';
@@ -32,6 +33,10 @@ abstract class User implements Built<User, UserBuilder> {
 
   @HiveField(3)
   String get displayName;
+
+  @nullable
+  @HiveField(4)
+  BuiltList<int> get likes;
 
   @memoized
   ImageGrid get image => !photo.startsWith('http') ? ImageGrid.fromEncoded(photo) : null;
