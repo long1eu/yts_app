@@ -31,6 +31,7 @@ class AuthApi {
   Observable<User> get authChange {
     return Observable<User>(_authService.authStateChanged) //
         .startWith(_userBox.get('user'))
+        .asyncMap(_ensureUserRecord)
         .distinct()
         .doOnData((User user) => _userBox.put('user', user));
   }
