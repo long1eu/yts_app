@@ -39,4 +39,5 @@ flutter:
   uses-material-design: true
   assets:
     - res/google.svg
+    - res/imdb.svg
     - res/yts.svg

@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:meta/meta.dart';
 
 import 'serializers.dart';
 
@@ -21,14 +22,14 @@ const int _kBaseSeed = 6;
 const String _kMatrixPattern = 'matrix:<:>:';
 
 abstract class ImageGrid implements Built<ImageGrid, ImageGridBuilder> {
-  factory ImageGrid({double width = 120, double height = 120, int color}) {
+  factory ImageGrid({double width = 120, double height = 120, @required int color, BuiltList<BuiltList<int>> grid}) {
     return _$ImageGrid((ImageGridBuilder b) {
       b
         ..width = width
         ..height = height ?? width
         ..seedW = width / _kBaseSeed
         ..seedH = (height ?? width) / _kBaseSeed
-        ..grid = _generatedGrid().toBuilder()
+        ..grid = (grid ?? _generatedGrid()).toBuilder()
         ..color = color;
     });
   }
@@ -60,6 +61,15 @@ abstract class ImageGrid implements Built<ImageGrid, ImageGridBuilder> {
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<ImageGrid> get serializer => _$imageGridSerializer;
+
+  ImageGrid copyWith({double size}) {
+    return ImageGrid(
+      color: color,
+      width: size,
+      height: size,
+      grid: grid,
+    );
+  }
 }
 
 BuiltList<BuiltList<int>> _generatedGrid() {

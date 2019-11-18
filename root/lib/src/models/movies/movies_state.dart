@@ -32,6 +32,9 @@ abstract class MoviesState implements Built<MoviesState, MoviesStateBuilder> {
 
   RequestState get requestState;
 
+  @memoized
+  List<Movie> get moviesList => movies.values.toList()..sort();
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<MoviesState> get serializer => _$moviesStateSerializer;

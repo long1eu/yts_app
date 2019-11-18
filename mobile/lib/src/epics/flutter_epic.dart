@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -28,7 +29,9 @@ class FlutterEpic {
     return Observable<BootstrapSuccessful>(actions) //
         .map<String>((BootstrapSuccessful action) => _userBox.get('user_color') ?? '{}')
         .map((String data) => Map<String, dynamic>.from(jsonDecode(data)))
-        .map((Map<String, dynamic> json) => json.isEmpty ? ImageGrid() : ImageGrid.fromJson(json))
+        .map((Map<String, dynamic> json) => json.isEmpty
+            ? ImageGrid(color: (Colors.accents.toList()..shuffle()).first.value)
+            : ImageGrid.fromJson(json))
         .expand((ImageGrid image) => <AppAction>[SetImageGrid(image), UpdateRegisterData(photo: image.encode)]);
   }
 }

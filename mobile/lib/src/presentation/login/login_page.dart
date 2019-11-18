@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/src/presentation/widgets/store_mixin.dart';
+import 'package:mobile/src/util/action_interceptor.dart';
 import 'package:root/auth.dart';
 import 'package:root/root.dart';
 
@@ -22,27 +23,41 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> with StoreMixin<LoginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _name = TextEditingController();
+  final FocusNode _emailNode = FocusNode();
   final FocusNode _nameNode = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  bool showName = false;
-  bool showNextForPassword = false;
+  bool _showName = false;
+  bool _showNextForPassword = false;
 
   @override
   void initState() {
     super.initState();
-
     _email.addListener(_onEmailChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ActionInterceptor.of(context).whereType<BootstrapSuccessful>().take(1).listen(_onBootstrap);
+  }
+
+  void _onBootstrap(BootstrapSuccessful event) {
+    if (mounted) {
+      if (event.isUnauthenticated) {
+        FocusScope.of(context).requestFocus(_emailNode);
+      }
+    }
   }
 
   void _onEmailChanged() {
     if (EmailValidator.validate(_email.text) && store.state.authState.registerInfo.email != _email.text) {
       dispatch(GetEmailInfo(_email.text, _response));
 
-      if (showName) {
+      if (_showName) {
         _name.clear();
-        setState(() => showName = false);
+        setState(() => _showName = false);
       }
     }
   }
@@ -51,13 +66,13 @@ class _LoginPageState extends State<LoginPage> with StoreMixin<LoginPage> {
     if (action is GetEmailInfoSuccessful) {
       if (action.email == _email.text) {
         if (action.providers.isNotEmpty) {
-          setState(() => showNextForPassword = true);
+          setState(() => _showNextForPassword = true);
         } else {
           final String username = action.email.split('@')[0];
           dispatch(UpdateRegisterData(displayName: username));
           _name.text = username;
 
-          setState(() => showName = true);
+          setState(() => _showName = true);
 
           Future<void>.delayed(const Duration(milliseconds: 50), () => FocusScope.of(context).requestFocus(_nameNode));
         }
@@ -119,13 +134,13 @@ class _LoginPageState extends State<LoginPage> with StoreMixin<LoginPage> {
             children: <Widget>[
               TextField(
                 controller: _email,
-                autofocus: true,
+                focusNode: _emailNode,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'email',
-                  suffixIcon: showNextForPassword
+                  suffixIcon: _showNextForPassword
                       ? IconButton(
                           icon: Icon(Icons.navigate_next),
                           onPressed: _goToPasswordPage,
@@ -133,12 +148,12 @@ class _LoginPageState extends State<LoginPage> with StoreMixin<LoginPage> {
                       : null,
                 ),
                 onEditingComplete: () {
-                  if (showName) {
+                  if (_showName) {
                     FocusScope.of(context).requestFocus(_nameNode);
                   }
                 },
               ),
-              if (showName)
+              if (_showName)
                 Container(
                   margin: const EdgeInsetsDirectional.only(top: 8.0),
                   child: TextField(

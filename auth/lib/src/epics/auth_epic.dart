@@ -6,6 +6,8 @@ import 'package:auth/src/data/index.dart';
 import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/auth.dart';
+import 'package:root/movies.dart';
+import 'package:root/root.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthEpic {
@@ -20,13 +22,14 @@ class AuthEpic {
       TypedEpic<AuthState, Bootstrap>(_bootstrap),
       TypedEpic<AuthState, Authenticate>(_authenticate),
       TypedEpic<AuthState, GetEmailInfo>(_getEmailInfo),
+      TypedEpic<AuthState, SignOut>(_signOut),
     ]);
   }
 
-  Stream<AuthAction> _bootstrap(Stream<Bootstrap> actions, EpicStore<AuthState> store) {
+  Stream<AppAction> _bootstrap(Stream<Bootstrap> actions, EpicStore<AuthState> store) {
     return Observable<Bootstrap>(actions) //
         .flatMap((Bootstrap action) => _authApi.authChange)
-        .map<AuthAction>((User user) => BootstrapSuccessful(user))
+        .expand<AppAction>((User user) => <AppAction>[BootstrapSuccessful(user), if (user != null) GetMovies()])
         .onErrorReturnWith((dynamic error) => BootstrapError(error));
   }
 
@@ -48,5 +51,12 @@ class AuthEpic {
                 .map<AuthAction>((List<String> providers) => GetEmailInfoSuccessful(providers, action.email))
                 .onErrorReturnWith((dynamic error) => GetEmailInfoError(error))
                 .doOnData(action.response));
+  }
+
+  Stream<AuthAction> _signOut(Stream<SignOut> actions, EpicStore<AuthState> store) {
+    return Observable<SignOut>(actions) //
+        .flatMap((_) => Observable<void>.fromFuture(_authApi.signOut())
+            .mapTo<AuthAction>(SignOutSuccessful())
+            .onErrorReturnWith((dynamic error) => SignOutError(error)));
   }
 }

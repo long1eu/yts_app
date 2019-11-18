@@ -6,9 +6,15 @@ library set_selected_movie;
 
 import 'package:built_value/built_value.dart';
 
+import 'index.dart';
+
 part 'set_selected_movie.g.dart';
 
-abstract class SetSelectedMovieId implements Built<SetSelectedMovieId, SetSelectedMovieIdBuilder> {
+abstract class SetSelectedMovieId //
+    implements
+        Built<SetSelectedMovieId, SetSelectedMovieIdBuilder>,
+        PlatformAction //
+{
   factory SetSelectedMovieId(int movieId) {
     return _$SetSelectedMovieId((SetSelectedMovieIdBuilder b) => b.movieId = movieId);
   }

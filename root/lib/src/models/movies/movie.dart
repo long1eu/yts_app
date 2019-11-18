@@ -14,7 +14,7 @@ import 'serializers.dart';
 part 'movie.g.dart';
 
 @HiveType(typeId: 1)
-abstract class Movie implements Built<Movie, MovieBuilder> {
+abstract class Movie implements Built<Movie, MovieBuilder>, Comparable<Movie> {
   factory Movie([void Function(MovieBuilder b) updates]) = _$Movie;
 
   factory Movie.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
@@ -58,6 +58,9 @@ abstract class Movie implements Built<Movie, MovieBuilder> {
   @HiveField(10)
   @BuiltValueField(wireName: 'background_image_original')
   String get background;
+
+  @override
+  int compareTo(Movie other) => other.id.compareTo(id);
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

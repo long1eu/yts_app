@@ -4,6 +4,7 @@
 
 import 'package:app_platform/app_platform.dart' as platform;
 import 'package:auth/auth.dart' as auth;
+import 'package:flutter/foundation.dart';
 import 'package:mobile/src/models/app_state.dart';
 import 'package:movies/movies.dart' as movies;
 import 'package:redux/redux.dart';
@@ -16,9 +17,23 @@ Reducer<AppState> reducer = combineReducers<AppState>(<Reducer<AppState>>[
 ]);
 
 AppState _moduleReducers(AppState state, dynamic action) {
-  print(action);
-  if (action is! AppAction) {
-    throw StateError('This actions is not an AppAction. ${action.runtimeType}\n$action');
+  if (!kReleaseMode) {
+    if (action is! AppAction) {
+      throw StateError('This action is not an AppAction. ${action.runtimeType}\n$action');
+    }
+
+    if (action is ErrorAction) {
+      final StackTrace stackTrace = () {
+        try {
+          final dynamic error = action.error;
+          return error.stackTrace;
+        } catch (e) {
+          return StackTrace.current;
+        }
+      }();
+
+      print('${action.runtimeType} ${action.error} ${stackTrace == null ? '' : '\n${stackTrace.toString()}'}');
+    }
   }
 
   return state.rebuild((AppStateBuilder b) {
