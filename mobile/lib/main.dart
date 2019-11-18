@@ -39,6 +39,12 @@ Future<void> main() async {
   registerHiveTypes();
   final Box<dynamic> userBox = await Hive.openBox<dynamic>('user_box');
 
+  // It is safe to ignore this since we need them as long as the app is running
+  // ignore: close_sinks
+  final BehaviorSubject<dynamic> actions = BehaviorSubject<dynamic>();
+  // ignore: close_sinks
+  final BehaviorSubject<int> selectedMovie = BehaviorSubject<int>();
+
   // initialize epics
   final GoogleService googleService = FlutterGoogleService(google: GoogleSignIn());
   final FirebaseAuthService authService = FirebaseAuthService(firebaseAuth: FirebaseAuth.instance);
@@ -50,24 +56,22 @@ Future<void> main() async {
     databaseService: databaseService,
     googleService: googleService,
     userBox: userBox,
+    selectedMovie: selectedMovie,
   );
 
   // initialize middleware
   final AppMiddleware appMiddleware = AppMiddleware(userBox: userBox);
 
   // initialize store
-  // Create your own Logger
-  final Logger logger = Logger('Redux Logger');
-
-  // It is safe to ignore this since we need it as long as the app is running
-  // ignore: close_sinks
-  final BehaviorSubject<dynamic> actions = BehaviorSubject<dynamic>();
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
     middleware: <Middleware<AppState>>[
       ...appMiddleware.middleware,
-      LoggingMiddleware<AppState>.printer(logger: logger, formatter: onlyLogActionFormatter),
+      LoggingMiddleware<AppState>.printer(
+        logger: Logger('Redux Logger'),
+        formatter: onlyLogActionFormatter,
+      ),
       EpicMiddleware<AppState>(epics.epic),
       (_, dynamic action, NextDispatcher next) {
         next(action);
@@ -75,6 +79,12 @@ Future<void> main() async {
       }
     ],
   );
+
+  //
+  store //
+      .onChange
+      .map((AppState it) => it.moviesState.selectedMovieId)
+      .listen(selectedMovie.add);
 
   // start app
   runApp(YtsApp(store: store..dispatch(Bootstrap()), actions: actions));

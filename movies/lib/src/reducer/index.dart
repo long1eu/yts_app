@@ -10,6 +10,7 @@ final Reducer<MoviesState> reducer = combineReducers(<Reducer<MoviesState>>[
   TypedReducer<MoviesState, MoviesActionDone>(_moviesActionDone),
   TypedReducer<MoviesState, GetMoviesSuccessful>(_getMoviesSuccessful),
   TypedReducer<MoviesState, UpdateRequest>(_updateRequest),
+  TypedReducer<MoviesState, SetSelectedMovieId>(_setSelectedMovieId),
 ]);
 
 MoviesState _moviesActionStart(MoviesState state, MoviesActionStart action) {
@@ -38,5 +39,11 @@ MoviesState _updateRequest(MoviesState state, UpdateRequest action) {
       ..replace(action.request)
       ..page = 1
       ..isLoading = false;
+  });
+}
+
+MoviesState _setSelectedMovieId(MoviesState state, SetSelectedMovieId action) {
+  return state.rebuild((MoviesStateBuilder b) {
+    b.selectedMovieId = action.movieId;
   });
 }

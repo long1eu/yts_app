@@ -21,7 +21,7 @@ packages:
       path: "../platform"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   args:
     dependency: transitive
     description:
@@ -42,7 +42,7 @@ packages:
       path: "../auth"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -284,7 +284,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3e990386ed80b52e0aecfd30ca3f48f9b6ca854a"
+      resolved-ref: f253c4e2e33bbc1ff2342bf08837aac3206f212d
       url: "https://github.com/long1eu/hive_generator"
     source: git
     version: "0.5.2"
@@ -378,7 +378,7 @@ packages:
       path: "../movies"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   node_interop:
     dependency: transitive
     description:
@@ -525,7 +525,7 @@ packages:
       path: "../root"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   rxdart:
     dependency: transitive
     description:

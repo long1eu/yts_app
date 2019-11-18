@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
+import 'package:pedantic/pedantic.dart';
 
 final bool hasColor = stdout.supportsAnsiEscapes;
 
@@ -37,9 +38,12 @@ String get clock {
 String prettyPrintDuration(Duration duration) {
   String result = '';
   final int minutes = duration.inMinutes;
-  if (minutes > 0) result += '${minutes}min ';
+  if (minutes > 0) {
+    result += '${minutes}min ';
+  }
   final int seconds = duration.inSeconds - minutes * 60;
   final int milliseconds = duration.inMilliseconds - (seconds * 1000 + minutes * 60 * 1000);
+  // ignore: join_return_with_assignment
   result += '$seconds.${milliseconds.toString().padLeft(3, "0")}s';
   return result;
 }
@@ -58,8 +62,7 @@ Stream<String> runAndGetStdout(
   String failureMessage,
   Function beforeExit,
 }) async* {
-  final String commandDescription =
-      '${path.relative(executable, from: workingDirectory)} ${arguments.join(' ')}';
+  final String commandDescription = '${path.relative(executable, from: workingDirectory)} ${arguments.join(' ')}';
   final String relativeWorkingDir = path.relative(workingDirectory);
 
   printProgress('RUNNING', relativeWorkingDir, commandDescription);
@@ -72,9 +75,8 @@ Stream<String> runAndGetStdout(
     environment: environment,
   );
 
-  stderr.addStream(process.stderr);
-  final Stream<String> lines =
-      process.stdout.transform(utf8.decoder).transform(const LineSplitter());
+  unawaited(stderr.addStream(process.stderr));
+  final Stream<String> lines = process.stdout.transform(utf8.decoder).transform(const LineSplitter());
   await for (String line in lines) {
     yield line;
   }
@@ -82,8 +84,7 @@ Stream<String> runAndGetStdout(
   final int exitCode = await process.exitCode;
   print(
       '$clock ELAPSED TIME: ${prettyPrintDuration(time.elapsed)} for $green$commandDescription$reset in $cyan$relativeWorkingDir$reset');
-  if ((exitCode == 0) == expectNonZeroExit ||
-      (expectedExitCode != null && exitCode != expectedExitCode)) {
+  if ((exitCode == 0) == expectNonZeroExit || (expectedExitCode != null && exitCode != expectedExitCode)) {
     if (failureMessage != null) {
       print(failureMessage);
     }
@@ -115,8 +116,7 @@ Future<void> runCommand(
       'The output parameter must be non-null with and only with '
       'OutputMode.capture');
 
-  final String commandDescription =
-      '${path.relative(executable, from: workingDirectory)} ${arguments.join(' ')}';
+  final String commandDescription = '${path.relative(executable, from: workingDirectory)} ${arguments.join(' ')}';
   final String relativeWorkingDir = path.relative(workingDirectory);
   if (skip) {
     printProgress('SKIPPING', relativeWorkingDir, commandDescription);
@@ -158,12 +158,12 @@ Future<void> runCommand(
       '$clock ELAPSED TIME: ${prettyPrintDuration(time.elapsed)} for $green$commandDescription$reset in $cyan$relativeWorkingDir$reset');
 
   if (output != null) {
-    output.stdout = _flattenToString(await savedStdout);
-    output.stderr = _flattenToString(await savedStderr);
+    output
+      ..stdout = _flattenToString(await savedStdout)
+      ..stderr = _flattenToString(await savedStderr);
   }
 
-  if ((exitCode == 0) == expectNonZeroExit ||
-      (expectedExitCode != null && exitCode != expectedExitCode)) {
+  if ((exitCode == 0) == expectNonZeroExit || (expectedExitCode != null && exitCode != expectedExitCode)) {
     if (failureMessage != null) {
       print(failureMessage);
     }
@@ -189,8 +189,7 @@ Future<void> runCommand(
 }
 
 /// Flattens a nested list of UTF-8 code units into a single string.
-String _flattenToString(List<List<int>> chunks) =>
-    utf8.decode(chunks.expand<int>((List<int> ints) => ints).toList());
+String _flattenToString(List<List<int>> chunks) => utf8.decode(chunks.expand<int>((List<int> ints) => ints).toList());
 
 /// Specifies what to do with command output from [runCommand].
 enum OutputMode { print, capture, discard }

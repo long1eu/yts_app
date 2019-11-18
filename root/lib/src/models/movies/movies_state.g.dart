@@ -26,7 +26,12 @@ class _$MoviesStateSerializer implements StructuredSerializer<MoviesState> {
       serializers.serialize(object.requestState,
           specifiedType: const FullType(RequestState)),
     ];
-
+    if (object.selectedMovieId != null) {
+      result
+        ..add('selectedMovieId')
+        ..add(serializers.serialize(object.selectedMovieId,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -41,6 +46,10 @@ class _$MoviesStateSerializer implements StructuredSerializer<MoviesState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'selectedMovieId':
+          result.selectedMovieId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'movies':
           result.movies.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
@@ -61,15 +70,19 @@ class _$MoviesStateSerializer implements StructuredSerializer<MoviesState> {
 
 class _$MoviesState extends MoviesState {
   @override
+  final int selectedMovieId;
+  @override
   final BuiltMap<int, Movie> movies;
   @override
   final RequestState requestState;
+  Movie __selectedMovie;
   List<Movie> __moviesList;
 
   factory _$MoviesState([void Function(MoviesStateBuilder) updates]) =>
       (new MoviesStateBuilder()..update(updates)).build();
 
-  _$MoviesState._({this.movies, this.requestState}) : super._() {
+  _$MoviesState._({this.selectedMovieId, this.movies, this.requestState})
+      : super._() {
     if (movies == null) {
       throw new BuiltValueNullFieldError('MoviesState', 'movies');
     }
@@ -77,6 +90,9 @@ class _$MoviesState extends MoviesState {
       throw new BuiltValueNullFieldError('MoviesState', 'requestState');
     }
   }
+
+  @override
+  Movie get selectedMovie => __selectedMovie ??= super.selectedMovie;
 
   @override
   List<Movie> get moviesList => __moviesList ??= super.moviesList;
@@ -92,18 +108,21 @@ class _$MoviesState extends MoviesState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is MoviesState &&
+        selectedMovieId == other.selectedMovieId &&
         movies == other.movies &&
         requestState == other.requestState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, movies.hashCode), requestState.hashCode));
+    return $jf($jc($jc($jc(0, selectedMovieId.hashCode), movies.hashCode),
+        requestState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MoviesState')
+          ..add('selectedMovieId', selectedMovieId)
           ..add('movies', movies)
           ..add('requestState', requestState))
         .toString();
@@ -112,6 +131,11 @@ class _$MoviesState extends MoviesState {
 
 class MoviesStateBuilder implements Builder<MoviesState, MoviesStateBuilder> {
   _$MoviesState _$v;
+
+  int _selectedMovieId;
+  int get selectedMovieId => _$this._selectedMovieId;
+  set selectedMovieId(int selectedMovieId) =>
+      _$this._selectedMovieId = selectedMovieId;
 
   MapBuilder<int, Movie> _movies;
   MapBuilder<int, Movie> get movies =>
@@ -128,6 +152,7 @@ class MoviesStateBuilder implements Builder<MoviesState, MoviesStateBuilder> {
 
   MoviesStateBuilder get _$this {
     if (_$v != null) {
+      _selectedMovieId = _$v.selectedMovieId;
       _movies = _$v.movies?.toBuilder();
       _requestState = _$v.requestState?.toBuilder();
       _$v = null;
@@ -154,7 +179,9 @@ class MoviesStateBuilder implements Builder<MoviesState, MoviesStateBuilder> {
     try {
       _$result = _$v ??
           new _$MoviesState._(
-              movies: movies.build(), requestState: requestState.build());
+              selectedMovieId: selectedMovieId,
+              movies: movies.build(),
+              requestState: requestState.build());
     } catch (_) {
       String _$failedField;
       try {

@@ -7,16 +7,9 @@ import 'package:root/platform.dart';
 import 'package:root/root.dart';
 
 final Reducer<PlatformState> reducer = combineReducers(<Reducer<PlatformState>>[
-  TypedReducer<PlatformState, SetSelectedMovieId>(_setSelectedMovieId),
   TypedReducer<PlatformState, OnCommentsEvent>(_onCommentsEvent),
   TypedReducer<PlatformState, SendCommentAction>(_sendCommentAction),
 ]);
-
-PlatformState _setSelectedMovieId(PlatformState state, SetSelectedMovieId action) {
-  return state.rebuild((PlatformStateBuilder b) {
-    b.selectedMovieId = action.movieId;
-  });
-}
 
 PlatformState _onCommentsEvent(PlatformState state, OnCommentsEvent action) {
   return state.rebuild((PlatformStateBuilder b) {

@@ -13,7 +13,7 @@ part 'set_selected_movie.g.dart';
 abstract class SetSelectedMovieId //
     implements
         Built<SetSelectedMovieId, SetSelectedMovieIdBuilder>,
-        PlatformAction //
+        MoviesAction //
 {
   factory SetSelectedMovieId(int movieId) {
     return _$SetSelectedMovieId((SetSelectedMovieIdBuilder b) => b.movieId = movieId);

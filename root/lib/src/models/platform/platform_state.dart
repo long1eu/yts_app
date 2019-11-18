@@ -26,9 +26,6 @@ abstract class PlatformState implements Built<PlatformState, PlatformStateBuilde
 
   PlatformState._();
 
-  @nullable
-  int get selectedMovieId;
-
   BuiltMap<int, MovieData> get movieData;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);

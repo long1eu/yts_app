@@ -24,12 +24,7 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(MovieData)])),
     ];
-    if (object.selectedMovieId != null) {
-      result
-        ..add('selectedMovieId')
-        ..add(serializers.serialize(object.selectedMovieId,
-            specifiedType: const FullType(int)));
-    }
+
     return result;
   }
 
@@ -45,10 +40,6 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'selectedMovieId':
-          result.selectedMovieId = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'movieData':
           result.movieData.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
@@ -65,14 +56,12 @@ class _$PlatformStateSerializer implements StructuredSerializer<PlatformState> {
 
 class _$PlatformState extends PlatformState {
   @override
-  final int selectedMovieId;
-  @override
   final BuiltMap<int, MovieData> movieData;
 
   factory _$PlatformState([void Function(PlatformStateBuilder) updates]) =>
       (new PlatformStateBuilder()..update(updates)).build();
 
-  _$PlatformState._({this.selectedMovieId, this.movieData}) : super._() {
+  _$PlatformState._({this.movieData}) : super._() {
     if (movieData == null) {
       throw new BuiltValueNullFieldError('PlatformState', 'movieData');
     }
@@ -88,20 +77,17 @@ class _$PlatformState extends PlatformState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is PlatformState &&
-        selectedMovieId == other.selectedMovieId &&
-        movieData == other.movieData;
+    return other is PlatformState && movieData == other.movieData;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, selectedMovieId.hashCode), movieData.hashCode));
+    return $jf($jc(0, movieData.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PlatformState')
-          ..add('selectedMovieId', selectedMovieId)
           ..add('movieData', movieData))
         .toString();
   }
@@ -110,11 +96,6 @@ class _$PlatformState extends PlatformState {
 class PlatformStateBuilder
     implements Builder<PlatformState, PlatformStateBuilder> {
   _$PlatformState _$v;
-
-  int _selectedMovieId;
-  int get selectedMovieId => _$this._selectedMovieId;
-  set selectedMovieId(int selectedMovieId) =>
-      _$this._selectedMovieId = selectedMovieId;
 
   MapBuilder<int, MovieData> _movieData;
   MapBuilder<int, MovieData> get movieData =>
@@ -126,7 +107,6 @@ class PlatformStateBuilder
 
   PlatformStateBuilder get _$this {
     if (_$v != null) {
-      _selectedMovieId = _$v.selectedMovieId;
       _movieData = _$v.movieData?.toBuilder();
       _$v = null;
     }
@@ -150,9 +130,7 @@ class PlatformStateBuilder
   _$PlatformState build() {
     _$PlatformState _$result;
     try {
-      _$result = _$v ??
-          new _$PlatformState._(
-              selectedMovieId: selectedMovieId, movieData: movieData.build());
+      _$result = _$v ?? new _$PlatformState._(movieData: movieData.build());
     } catch (_) {
       String _$failedField;
       try {

@@ -182,8 +182,8 @@ class _$RequestStateAdapter extends TypeAdapter<RequestState> {
 
   @override
   RequestState read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return (RequestStateBuilder()

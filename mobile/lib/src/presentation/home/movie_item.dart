@@ -7,7 +7,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/src/models/app_state.dart';
 import 'package:root/movies.dart';
-import 'package:root/platform.dart';
 
 class MovieItem extends StatelessWidget {
   const MovieItem({

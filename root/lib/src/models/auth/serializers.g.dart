@@ -27,6 +27,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
 // TypeAdaptersGenerator
 // **************************************************************************
 
+// ignore_for_file: cascade_invocations
 void _$registerHiveTypes() {
   Hive.registerAdapter(User.typeAdapter, User.typeAdapter.typeId);
 }

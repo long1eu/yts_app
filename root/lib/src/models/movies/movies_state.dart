@@ -28,9 +28,15 @@ abstract class MoviesState implements Built<MoviesState, MoviesStateBuilder> {
 
   MoviesState._();
 
+  @nullable
+  int get selectedMovieId;
+
   BuiltMap<int, Movie> get movies;
 
   RequestState get requestState;
+
+  @memoized
+  Movie get selectedMovie => selectedMovieId == null ? null : movies[selectedMovieId];
 
   @memoized
   List<Movie> get moviesList => movies.values.toList()..sort();

@@ -14,6 +14,9 @@ class CommentsApi {
   final DatabaseService _databaseService;
 
   Observable<List<Comment>> listenForComments(int movieId) {
+    if (movieId == null) {
+      return Observable<List<Comment>>.just(<Comment>[]);
+    }
     return _databaseService
         .snapshots('movies/$movieId/comments', limit: 100) //
         .map((DatabaseSnapshot snapshot) =>

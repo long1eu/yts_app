@@ -70,7 +70,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.1"
+    version: "1.7.2"
   build_runner_core:
     dependency: transitive
     description:
@@ -204,7 +204,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3e990386ed80b52e0aecfd30ca3f48f9b6ca854a"
+      resolved-ref: f253c4e2e33bbc1ff2342bf08837aac3206f212d
       url: "https://github.com/long1eu/hive_generator"
     source: git
     version: "0.5.2"
@@ -487,7 +487,7 @@ packages:
       name: stream_transform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.19"
+    version: "0.0.20"
   string_scanner:
     dependency: transitive
     description:
@@ -566,4 +566,4 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.5.0 <3.0.0"
+  dart: ">=2.6.0 <3.0.0"

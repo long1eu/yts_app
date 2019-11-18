@@ -2,18 +2,21 @@
 // Lung Razvan <long1eu>
 // on 16/11/2019
 
-import 'package:meta/meta.dart';
 import 'package:app_platform/src/data/comments_api.dart';
+import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/platform.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlatformEpic {
-  const PlatformEpic({@required CommentsApi commentsApi})
+  const PlatformEpic({@required CommentsApi commentsApi, @required BehaviorSubject<int> selectedMovie})
       : assert(commentsApi != null, 'CommentsApi should not be null.'),
-        _commentsApi = commentsApi;
+        assert(selectedMovie != null),
+        _commentsApi = commentsApi,
+        _selectedMovie = selectedMovie;
 
   final CommentsApi _commentsApi;
+  final BehaviorSubject<int> _selectedMovie;
 
   Epic<PlatformState> get epic {
     return combineEpics<PlatformState>(<Epic<PlatformState>>[
@@ -27,7 +30,7 @@ class PlatformEpic {
         .whereType<ListenForComments>()
         .doOnData((ListenForComments action) => print('▶️ listening for comments'))
         .flatMap((ListenForComments action) => _commentsApi
-            .listenForComments(store.state.selectedMovieId)
+            .listenForComments(_selectedMovie.value)
             .map<PlatformAction>((List<Comment> comments) => OnCommentsEvent(comments))
             .takeUntil(Observable<dynamic>(actions).whereType<StopListeningForComments>())
             .doOnDone(() => print('⏹ listening for comments')))

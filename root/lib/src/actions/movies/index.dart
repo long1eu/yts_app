@@ -5,6 +5,7 @@
 import 'package:root/src/actions/index.dart';
 
 export 'get_movies.dart';
+export 'set_selected_movie.dart';
 export 'update_request.dart';
 
 abstract class MoviesAction implements AppAction {

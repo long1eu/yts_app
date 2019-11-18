@@ -10,6 +10,7 @@ import 'package:mobile/src/models/app_state.dart';
 import 'package:movies/movies.dart' as movies;
 import 'package:redux_epics/redux_epics.dart';
 import 'package:root/root.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'index.dart' as flutter;
 
@@ -20,13 +21,14 @@ class AppEpics {
     @required DatabaseService databaseService,
     @required GoogleService googleService,
     @required Box<dynamic> userBox,
+    @required BehaviorSubject<int> selectedMovie,
   })  : assert(authService != null),
         assert(googleService != null),
         assert(httpService != null),
         assert(databaseService != null),
         _authEpic = auth.epic(authService: authService, googleService: googleService, userBox: userBox),
         _moviesEpic = movies.epic(httpService: httpService),
-        _platformEpic = platform.epic(databaseService: databaseService),
+        _platformEpic = platform.epic(databaseService: databaseService, selectedMovie: selectedMovie),
         _flutterEpic = flutter.epic(userBox: userBox);
 
   final Epic<AuthState> _authEpic;
