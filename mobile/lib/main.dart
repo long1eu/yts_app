@@ -7,6 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:mobile/src/data/auth_service.dart';
 import 'package:mobile/src/data/database_service.dart';
 import 'package:mobile/src/data/google_service.dart';
@@ -19,10 +20,14 @@ import 'package:mobile/src/presentation/home.dart';
 import 'package:mobile/src/presentation/login/login_page.dart';
 import 'package:mobile/src/presentation/login/password_page.dart';
 import 'package:mobile/src/reducer/reducer.dart';
+import 'package:mobile/src/util/action_interceptor.dart';
+import 'package:mobile/src/util/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:redux_logging/redux_logging.dart';
 import 'package:root/root.dart' hide registerHiveTypes;
+import 'package:rxdart/rxdart.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,37 +55,52 @@ Future<void> main() async {
   final AppMiddleware appMiddleware = AppMiddleware(userBox: userBox);
 
   // initialize store
+  // Create your own Logger
+  final Logger logger = Logger('Redux Logger');
+
+  // It is safe to ignore this since we need it as long as the app is running
+  // ignore: close_sinks
+  final BehaviorSubject<dynamic> actions = BehaviorSubject<dynamic>();
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
     middleware: <Middleware<AppState>>[
       ...appMiddleware.middleware,
+      LoggingMiddleware<AppState>.printer(logger: logger, formatter: onlyLogActionFormatter),
       EpicMiddleware<AppState>(epics.epic),
+      (_, dynamic action, NextDispatcher next) {
+        next(action);
+        actions.add(action);
+      }
     ],
   );
 
   // start app
-  runApp(YtsApp(store: store..dispatch(Bootstrap())));
+  runApp(YtsApp(store: store..dispatch(Bootstrap()), actions: actions));
 }
 
 class YtsApp extends StatelessWidget {
-  const YtsApp({Key key, @required this.store}) : super(key: key);
+  const YtsApp({Key key, @required this.store, @required this.actions}) : super(key: key);
 
   final Store<AppState> store;
+  final Observable<dynamic> actions;
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-      store: store,
-      child: MaterialApp(
-        theme: ThemeData.dark().copyWith(
-          accentColor: const Color(0xFF62B729),
+    return ActionInterceptor(
+      actions: actions,
+      child: StoreProvider<AppState>(
+        store: store,
+        child: MaterialApp(
+          theme: ThemeData.dark().copyWith(
+            accentColor: const Color(0xFF62B729),
+          ),
+          home: const Home(),
+          routes: <String, WidgetBuilder>{
+            AppRoutes.loginPage: (_) => const LoginPage(),
+            AppRoutes.passwordPage: (_) => const PasswordPage(),
+          },
         ),
-        home: const Home(),
-        routes: <String, WidgetBuilder>{
-          AppRoutes.loginPage: (_) => const LoginPage(),
-          AppRoutes.passwordPage: (_) => const PasswordPage(),
-        },
       ),
     );
   }
