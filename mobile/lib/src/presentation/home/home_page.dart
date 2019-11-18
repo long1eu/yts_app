@@ -4,10 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mobile/src/container/image_grid_container.dart';
 import 'package:mobile/src/container/movie_is_loading_container.dart';
 import 'package:mobile/src/container/movies_container.dart';
 import 'package:mobile/src/models/app_state.dart';
+import 'package:mobile/src/presentation/home/movie_item.dart';
 import 'package:mobile/src/presentation/widgets/random_avatar.dart';
 import 'package:mobile/src/presentation/widgets/store_mixin.dart';
 import 'package:root/auth.dart';
@@ -28,17 +30,12 @@ class _HomePageState extends State<HomePage> with StoreMixin<HomePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    dispatch(GetMovies());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ImageGridContainer(
       builder: (BuildContext context, ImageGrid image) {
         return Scaffold(
           appBar: AppBar(
+            title: SvgPicture.asset('res/yts.svg'),
             actions: <Widget>[
               if (image != null)
                 IconButton(
@@ -63,75 +60,7 @@ class _HomePageState extends State<HomePage> with StoreMixin<HomePage> {
                     itemBuilder: (BuildContext context, int i) {
                       final Movie movie = movies[i];
 
-                      return Material(
-                        elevation: 4.0,
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Flexible(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadiusDirectional.vertical(
-                                    top: Radius.circular(8.0),
-                                  ),
-                                  image: DecorationImage(
-                                    image: NetworkImage(movie.smallImage),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0,
-                                vertical: 16.0,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadiusDirectional.vertical(
-                                  bottom: Radius.circular(8.0),
-                                ),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    height: 54.0,
-                                    alignment: AlignmentDirectional.center,
-                                    child: Text(
-                                      movie.title,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-
-                                      Container(
-                                        height: 24.0,
-                                        alignment: AlignmentDirectional.center,
-                                        child: Text(
-                                          movie.year.toString(),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      return MovieItem(movie: movie);
                     },
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
