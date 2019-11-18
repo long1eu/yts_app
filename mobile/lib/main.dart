@@ -19,6 +19,7 @@ import 'package:mobile/src/models/serializers.dart';
 import 'package:mobile/src/presentation/home.dart';
 import 'package:mobile/src/presentation/login/login_page.dart';
 import 'package:mobile/src/presentation/login/password_page.dart';
+import 'package:mobile/src/presentation/movie_details/movie_details.dart';
 import 'package:mobile/src/reducer/reducer.dart';
 import 'package:mobile/src/util/action_interceptor.dart';
 import 'package:mobile/src/util/logging.dart';
@@ -99,6 +100,7 @@ class YtsApp extends StatelessWidget {
           routes: <String, WidgetBuilder>{
             AppRoutes.loginPage: (_) => const LoginPage(),
             AppRoutes.passwordPage: (_) => const PasswordPage(),
+            AppRoutes.movieDetailsPage: (_) => const MovieDetailsPage(),
           },
         ),
       ),
@@ -109,6 +111,7 @@ class YtsApp extends StatelessWidget {
 class AppRoutes {
   static const String home = '/';
   static const String homePage = '/homePage';
+  static const String movieDetailsPage = '/movieDetailsPage';
   static const String loginPage = '/loginPage';
   static const String passwordPage = '/passwordPage';
 }

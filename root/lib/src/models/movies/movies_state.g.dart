@@ -64,6 +64,7 @@ class _$MoviesState extends MoviesState {
   final BuiltMap<int, Movie> movies;
   @override
   final RequestState requestState;
+  List<Movie> __moviesList;
 
   factory _$MoviesState([void Function(MoviesStateBuilder) updates]) =>
       (new MoviesStateBuilder()..update(updates)).build();
@@ -76,6 +77,9 @@ class _$MoviesState extends MoviesState {
       throw new BuiltValueNullFieldError('MoviesState', 'requestState');
     }
   }
+
+  @override
+  List<Movie> get moviesList => __moviesList ??= super.moviesList;
 
   @override
   MoviesState rebuild(void Function(MoviesStateBuilder) updates) =>
