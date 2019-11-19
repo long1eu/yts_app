@@ -1,0 +1,24 @@
+image: "registry.gitlab.com/lung.razvan/yts_app"
+
+before_script:
+  - export PROJECT_ROOT=$PWD
+  - cd dev && flutter pub get && dart util/pub_get.dart && cd ..
+
+stages:
+  - build
+  - archive
+
+build_project:
+  stage: build
+  script:
+    - cd mobile
+    - flutter build ios --release
+
+archive_project:
+  stage: archive
+  script:
+    - xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/iphoneos/Runner.xcarchive
+    - xcodebuild -exportArchive -archivePath build/ios/iphoneos/Runner.app -exportPath build/ios/iphoneos/Runner.ipa
+  artifacts:
+    paths:
+      - build/ios/iphoneos/Runner.ipa
