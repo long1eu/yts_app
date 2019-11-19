@@ -4,3 +4,4 @@
 
 export 'auth_api.dart';
 export 'auth_providers/index.dart';
+export 'user_api.dart';
