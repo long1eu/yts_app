@@ -42,6 +42,7 @@ Future<void> main() async {
   // It is safe to ignore this since we need them as long as the app is running
   // ignore: close_sinks
   final BehaviorSubject<dynamic> actions = BehaviorSubject<dynamic>();
+
   // ignore: close_sinks
   final BehaviorSubject<int> selectedMovie = BehaviorSubject<int>();
 
