@@ -4,5 +4,16 @@
     <dict>
         <key>method</key>
         <string>app-store</string>
+        <key>teamID</key>
+        <string>DKY2FBVP6L</string>
+        <key>stripSwiftSymbols</key>
+        <true/>
+        <key>uploadSymbols</key>
+        <true/>
+        <key>provisioningProfiles</key>
+        <dict>
+            <key>eu.long1.yts</key>
+            <string>1fb7d196-0b1f-48fa-bdf7-aa7cf6161c93</string>
+        </dict>
     </dict>
 </plist>

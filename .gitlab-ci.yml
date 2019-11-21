@@ -2,6 +2,8 @@ image: "registry.gitlab.com/lung.razvan/yts_app"
 
 before_script:
   - export PROJECT_ROOT=$PWD
+  - export PROVISIONING_PROFILE_FILE=1fb7d196-0b1f-48fa-bdf7-aa7cf6161c93.mobileprovision
+  - export CERTIFICATE_PASSWORD=9dwxTKkMmemt8BgDRhFf5naM
   - cd dev && flutter pub get && dart util/pub_get.dart && cd ..
 
 stages:
@@ -17,8 +19,17 @@ build_project:
 archive_project:
   stage: archive
   script:
-    - xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath build/ios/iphoneos/Runner.xcarchive
-    - xcodebuild -exportArchive -archivePath build/ios/iphoneos/Runner.app -exportPath build/ios/iphoneos/Runner.ipa
+    # Install certificate
+    - security import ../dev/ci/certificate.p12 -P $CERTIFICATE_PASSWORD -A
+    # Extract provisioning file name and copy the provisioning file to ~/Library/MobileDevices/Provisioning Profiles
+    - security cms -D -i ../dev/ci/$PROVISIONING_PROFILE_FILE >> ../dev/ci/tmp.plist
+    - export PROVISIONING_PROFILE_NAME=$(/usr/libexec/PlistBuddy -c Print:Name ../dev/ci/tmp.plist)
+    - rm ../dev/ci/tmp.plist
+    - cp ../dev/ci/$PROVISIONING_PROFILE_FILE ~/Library/MobileDevice/Provisioning\ Profiles/$PROVISIONING_PROFILE_FILE
+
+    - xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release -archivePath build/ios/iphoneos/Runner.xcarchive PROVISIONING_PROFILE_SPECIFIER=$PROVISIONING_PROFILE_NAME -quiet
+    - xcodebuild -exportArchive -archivePath build/ios/iphoneos/Runner.xcarchive -exportPath build/ios/iphoneos/Runner.ipa -exportOptionsPlist ios/exportOptionsRelease.plist
+    - rm ~/Library/MobileDevice/Provisioning\ Profiles/$PROVISIONING_PROFILE_FILE
   artifacts:
     paths:
-      - build/ios/iphoneos/Runner.ipa
+      - build/ios/iphoneos/Runner.ipa/Runner.ipa
