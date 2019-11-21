@@ -45,6 +45,8 @@ Future<void> main() async {
   // ignore: close_sinks
   final BehaviorSubject<int> selectedMovie = BehaviorSubject<int>();
 
+
+
   // initialize epics
   final GoogleService googleService = FlutterGoogleService(google: GoogleSignIn());
   final FirebaseAuthService authService = FirebaseAuthService(firebaseAuth: FirebaseAuth.instance);
